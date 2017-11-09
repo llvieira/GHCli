@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "222913851898",
+    "firebase_url": "https://ghcli-7ee0f.firebaseio.com",
+    "project_id": "ghcli-7ee0f",
+    "storage_bucket": "ghcli-7ee0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222913851898:android:cb9055948aec6e7e",
+        "android_client_info": {
+          "package_name": "com.github.ghcli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222913851898-voml4a46rbifbpg6lflebj2l6b6l9ggt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0BDH5QSQ0qtR8Y7ct77ySk9qrOLEnfok"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,24 +1,22 @@
 package com.github.ghcli.activities;
 
+import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.alorma.github.sdk.bean.dto.response.Token;
-import com.alorma.github.sdk.services.login.RequestTokenClient;
-import com.alorma.github.sdk.services.user.GetAuthUserClient;
 import com.github.ghcli.R;
-import com.github.ghcli.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -26,220 +24,187 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
 
-import rx.Observer;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GHCli extends AppCompatActivity {
 
+    private final String TAG = getClass().getName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Button btnGit;
+    private TextView txtGit;
+    private LinearLayout llGit;
+    private boolean signed;
+    private WebView webView;
+    private SecureRandom random = new SecureRandom();
+//    private ImageView imgGit;
 
-    private User user;
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghcli);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        llGit = (LinearLayout) findViewById(R.id.llGit);
+//        imgGit = (ImageView) findViewById(R.id.imgGit);
+        txtGit = (TextView) findViewById(R.id.txtGit);
+        btnGit = (Button) findViewById(R.id.btnGit);
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = getFirebaseAuthResultHandler();
-    }
-
-    private void accessGithubLoginData(String accessToken){
-        accessLoginData(
-                "github",
-                accessToken
-        );
-    }
-
-    private void accessLoginData( String provider, String... tokens ){
-        if( tokens != null
-                && tokens.length > 0
-                && tokens[0] != null ){
-
-            AuthCredential credential = GithubAuthProvider.getCredential( tokens[0]);
-
-            user.saveProviderSP(GHCli.this, provider);
-            mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if (!task.isSuccessful()){
-//                                showSnackbar("Login social falhou");
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-//                            FirebaseCrash.report( e );
-                        }
-                    });
-        }
-        else{
-            mAuth.signOut();
-        }
-    }
-
-    private FirebaseAuth.AuthStateListener getFirebaseAuthResultHandler(){
-        FirebaseAuth.AuthStateListener callback = new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser userFirebase = firebaseAuth.getCurrentUser();
-
-                if( userFirebase == null ){
-                    return;
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    signed = true;
+                    llGit.setVisibility(View.VISIBLE);
+                    txtGit.setText(user.getDisplayName() + "\n" + user.getEmail());
+//                    Picasso.with(GHCli.this).load(user.getPhotoUrl()).into(imgGit);
+                    btnGit.setText(R.string.sign_out);
+                    Toast.makeText(GHCli.this, R.string.signed_in, Toast.LENGTH_SHORT).show();
+                } else {
+                    signed = false;
+                    llGit.setVisibility(View.GONE);
+                    btnGit.setText(R.string.sign_in);
+                    Toast.makeText(GHCli.this, R.string.signed_out, Toast.LENGTH_SHORT).show();
                 }
-
-                if( user.getId() == null
-                        && isNameOk(user, userFirebase) ){
-
-                    user.setId(userFirebase.getUid());
-                    user.setNameIfNull( userFirebase.getDisplayName() );
-                    user.setEmailIfNull( userFirebase.getEmail() );
-                    user.saveDB();
-                }
-
-//                callMainActivity();
             }
         };
-        return callback;
-    }
 
-    private void verifyLogged(){
-        if( mAuth.getCurrentUser() != null ){
-//            callMainActivity();
-        }
-        else{
-            mAuth.addAuthStateListener( mAuthListener );
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        verifyLogged();
-    }
-
-    private boolean isNameOk(User user, FirebaseUser firebaseUser){
-        return(
-                user.getName() != null
-                        || firebaseUser.getDisplayName() != null
-        );
-    }
-
-    public void sendLoginGithubData(View view) {
-//        FirebaseCrash.log("LoginActivity:clickListener:button:sendLoginGithubData()");
-        Uri uri = new Uri.Builder()
-                .scheme("https")
-                .authority("github.com")
-                .appendPath("login")
-                .appendPath("oauth")
-                .appendPath("authorize")
-                .appendQueryParameter("client_id", getString(R.string.github_app_id))
-                .appendQueryParameter("scope", "user,user:email")
-                .build();
-
-        WebView webView = new WebView(this);
-        webView.loadUrl( uri.toString() );
-        webView.setWebViewClient(new WebViewClient(){
+        //Approach 2
+        webView = (WebView) findViewById(R.id.webview);
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-                Uri uri = Uri.parse(url);
-
-                if( uri.getQueryParameter("code") != null
-                        && uri.getScheme() != null
-                        && uri.getScheme().equalsIgnoreCase("https")) {
-
-                    requestGitHubUserAccessToken(uri.getQueryParameter("code"));
+                if (url.startsWith("https://ghcli-7ee0f.")) {
+                    Uri uri = Uri.parse(url);
+                    String code = uri.getQueryParameter("code");
+                    String state = uri.getQueryParameter("state");
+                    sendPost(code, state);
+                    return true;
                 }
-
                 return super.shouldOverrideUrlLoading(view, url);
             }
         });
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Login GitHub");
-        alert.setView(webView);
-        alert.show();
+        //Called after the github server redirect us to REDIRECT_URL_CALLBACK
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(getString(R.string.github_app_url))) {
+            String code = uri.getQueryParameter("code");
+            String state = uri.getQueryParameter("state");
+            if (code != null && state != null)
+                sendPost(code, state);
+        }
     }
 
-    private void requestGitHubUserAccessToken(String code){
-        RequestTokenClient requestTokenClient = new RequestTokenClient(
-                code,
-                getString(R.string.github_app_id),
-                getString(R.string.github_app_secret),
-                getString(R.string.github_app_url)
-        );
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
 
-        requestTokenClient
-                .observable()
-                .subscribe(new Observer<Token>() {
-                    @Override
-                    public void onCompleted() {}
+    public void signInOut(View view) {
+        if (!signed) {
+            //https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
+            //GET http://github.com/login/oauth/authorize
+            HttpUrl httpUrl = new HttpUrl.Builder()
+                    .scheme("http")
+                    .host("github.com")
+                    .addPathSegment("login")
+                    .addPathSegment("oauth")
+                    .addPathSegment("authorize")
+                    .addQueryParameter("client_id", getString(R.string.github_app_id))
+                    .addQueryParameter("redirect_uri", getString(R.string.github_app_url))
+                    .addQueryParameter("state", getRandomString())
+                    .addQueryParameter("scope", "user:email")
+                    .build();
 
-                    @Override
-                    public void onError(Throwable e) {
-//                        FirebaseCrash.report( e );
-//                        showSnackbar( e.getMessage() );
-                    }
+            Log.d(TAG, httpUrl.toString());
 
+            //Approach 1
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(httpUrl.toString()));
+//            startActivity(intent);
+
+            //Approach 2
+            webView.loadUrl(httpUrl.toString());
+
+        } else {
+            mAuth.signOut();
+        }
+    }
+
+    private String getRandomString() {
+        return new BigInteger(130, random).toString(32);
+    }
+
+    private void sendPost(String code, String state) {
+        //POST https://github.com/login/oauth/access_token
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        FormBody form = new FormBody.Builder()
+                .add("client_id", getString(R.string.github_app_id))
+                .add("client_secret", getString(R.string.github_app_secret))
+                .add("code", code)
+                .add("redirect_uri", getString(R.string.github_app_url))
+                .add("state", state)
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://github.com/login/oauth/access_token")
+                .post(form)
+                .build();
+
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                Toast.makeText(GHCli.this, "onFailure: " + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&token_type=bearer
+                String responseBody = response.body().string();
+                String[] splitted = responseBody.split("=|&");
+                if (splitted[0].equalsIgnoreCase("access_token"))
+                    signInWithToken(splitted[1]);
+                else
+                    Toast.makeText(GHCli.this, "splitted[0] =>" + splitted[0], Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void signInWithToken(String token) {
+        AuthCredential credential = GithubAuthProvider.getCredential(token);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onNext(Token token) {
-                        if( token.access_token != null ){
-                            requestGitHubUserData(token.access_token);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        if (!task.isSuccessful()) {
+                            task.getException().printStackTrace();
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(GHCli.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void requestGitHubUserData(final String accessToken) {
-        GetAuthUserClient getAuthUserClient = new GetAuthUserClient(accessToken);
-        getAuthUserClient
-                .observable()
-                .subscribe(new Observer<com.alorma.github.sdk.bean.dto.response.User>() {
-                    @Override
-                    public void onCompleted() {}
-
-                    @Override
-                    public void onError(Throwable e) {
-//                        FirebaseCrash.report( e );
-                    }
-
-                    @Override
-                    public void onNext(com.alorma.github.sdk.bean.dto.response.User user) {
-                        GHCli.this.user.setName(user.name);
-                        GHCli.this.user.setEmail(user.email);
-
-                        accessGithubLoginData(accessToken);
-                    }
-                });
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_ghcli, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -8,15 +8,32 @@
     tools:context="com.github.ghcli.activities.GHCli"
     tools:showIn="@layout/activity_ghcli">
 
+    <LinearLayout
+        android:id="@+id/llGit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/txtGit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="userName and email" />
+
+    </LinearLayout>
+
     <Button
-        android:onClick="sendLoginGithubData"
-        android:id="@+id/btn_login"
+        android:id="@+id/btnGit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:onClick="signInOut"
+        android:text="SignIn" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.constraint.ConstraintLayout>
