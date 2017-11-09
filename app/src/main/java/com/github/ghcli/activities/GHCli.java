@@ -1,5 +1,6 @@
 package com.github.ghcli.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -69,7 +71,7 @@ public class GHCli extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     signed = true;
                     llGit.setVisibility(View.VISIBLE);
@@ -122,28 +124,36 @@ public class GHCli extends AppCompatActivity {
         if (!signed) {
             //https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
             //GET http://github.com/login/oauth/authorize
-            HttpUrl httpUrl = new HttpUrl.Builder()
+            Uri uri = new Uri.Builder()
                     .scheme("http")
-                    .host("github.com")
-                    .addPathSegment("login")
-                    .addPathSegment("oauth")
-                    .addPathSegment("authorize")
-                    .addQueryParameter("client_id", getString(R.string.github_app_id))
-                    .addQueryParameter("redirect_uri", getString(R.string.github_app_url))
-                    .addQueryParameter("state", getRandomString())
-                    .addQueryParameter("scope", "user:email")
+                    .authority("github.com")
+                    .appendPath("login")
+                    .appendPath("oauth")
+                    .appendPath("authorize")
+                    .appendQueryParameter("client_id", getString(R.string.github_app_id))
+                    .appendQueryParameter("redirect_uri", getString(R.string.github_app_url))
+                    .appendQueryParameter("scope", "user,user:email")
                     .build();
 
-            Log.d(TAG, httpUrl.toString());
+            Log.d(TAG, uri.toString());
 
             //Approach 1
 //            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(httpUrl.toString()));
 //            startActivity(intent);
 
             //Approach 2
-            webView.loadUrl(httpUrl.toString());
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.loadUrl(uri.toString());
+
 
         } else {
+            clearApplicationData();
+            deleteCache(getApplicationContext());
+            webView.clearCache(true);
+            webView.clearFormData();
+            webView.clearHistory();
+            webView.clearMatches();
+            webView.clearSslPreferences();
             mAuth.signOut();
         }
     }
@@ -161,7 +171,6 @@ public class GHCli extends AppCompatActivity {
                 .add("client_secret", getString(R.string.github_app_secret))
                 .add("code", code)
                 .add("redirect_uri", getString(R.string.github_app_url))
-                .add("state", state)
                 .build();
 
         Request request = new Request.Builder()
@@ -191,6 +200,7 @@ public class GHCli extends AppCompatActivity {
     }
 
     public void signInWithToken(String token) {
+
         AuthCredential credential = GithubAuthProvider.getCredential(token);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -205,6 +215,60 @@ public class GHCli extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    public void clearApplicationData() {
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory = new File(cacheDirectory.getParent());
+        if (applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            for (String fileName : fileNames) {
+                if (!fileName.equals("lib")) {
+                    deleteFile(new File(applicationDirectory, fileName));
+                }
+            }
+        }
+    }
+
+    public static boolean deleteFile(File file) {
+        boolean deletedAll = true;
+        if (file != null) {
+            if (file.isDirectory()) {
+                String[] children = file.list();
+                for (int i = 0; i < children.length; i++) {
+                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
+                }
+            } else {
+                deletedAll = file.delete();
+            }
+        }
+
+        return deletedAll;
     }
 
 }
