@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -10,8 +12,10 @@
 
     <LinearLayout
         android:id="@+id/llGit"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:padding="10dp">
 
         <TextView
@@ -24,16 +28,22 @@
 
     </LinearLayout>
 
-    <Button
+
+
+        <Button
         android:id="@+id/btnGit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="signInOut"
-        android:text="SignIn" />
+        android:text="SignIn"
+        android:layout_gravity="center" />
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-</android.support.constraint.ConstraintLayout>
+
+
+
+</LinearLayout>
