@@ -9,5 +9,6 @@
     <string name="signed_in">SignedIn</string>
     <string name="sign_in">SingIn</string>
     <string name="signed_out">SignedOut</string>
+    <string name="title_activity_home_page">HomePage</string>
 
 </resources>

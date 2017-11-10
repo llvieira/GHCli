@@ -1,19 +1,12 @@
 package com.github.ghcli.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.ghcli.R;
@@ -25,31 +18,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GithubAuthProvider;
 
-import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class GHCli extends AppCompatActivity {
 
-    private final String TAG = getClass().getName();
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private Button btnGit;
-    private TextView txtGit;
-    private LinearLayout llGit;
     private boolean signed;
     private WebView webView;
-    private SecureRandom random = new SecureRandom();
-//    private ImageView imgGit;
 
     @Override
     public void onStart() {
@@ -62,33 +45,21 @@ public class GHCli extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghcli);
 
-        llGit = (LinearLayout) findViewById(R.id.llGit);
-//        imgGit = (ImageView) findViewById(R.id.imgGit);
-        txtGit = (TextView) findViewById(R.id.txtGit);
-        btnGit = (Button) findViewById(R.id.btnGit);
-
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     signed = true;
-                    llGit.setVisibility(View.VISIBLE);
-                    txtGit.setText(user.getDisplayName() + "\n" + user.getEmail());
-//                    Picasso.with(GHCli.this).load(user.getPhotoUrl()).into(imgGit);
-                    btnGit.setText(R.string.sign_out);
-                    Toast.makeText(GHCli.this, R.string.signed_in, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), HomePage.class));
                 } else {
                     signed = false;
-                    llGit.setVisibility(View.GONE);
-                    btnGit.setText(R.string.sign_in);
-                    Toast.makeText(GHCli.this, R.string.signed_out, Toast.LENGTH_SHORT).show();
+                    signInOut();
                 }
             }
         };
 
-        //Approach 2
         webView = (WebView) findViewById(R.id.webview);
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -104,7 +75,6 @@ public class GHCli extends AppCompatActivity {
             }
         });
 
-        //Called after the github server redirect us to REDIRECT_URL_CALLBACK
         Uri uri = getIntent().getData();
         if (uri != null && uri.toString().startsWith(getString(R.string.github_app_url))) {
             String code = uri.getQueryParameter("code");
@@ -117,13 +87,10 @@ public class GHCli extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
     }
 
-    public void signInOut(View view) {
+    public void signInOut() {
         if (!signed) {
-            //https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
-            //GET http://github.com/login/oauth/authorize
             Uri uri = new Uri.Builder()
                     .scheme("http")
                     .authority("github.com")
@@ -135,36 +102,15 @@ public class GHCli extends AppCompatActivity {
                     .appendQueryParameter("scope", "user,user:email")
                     .build();
 
-            Log.d(TAG, uri.toString());
-
-            //Approach 1
-//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(httpUrl.toString()));
-//            startActivity(intent);
-
-            //Approach 2
             webView.getSettings().setJavaScriptEnabled(true);
             webView.loadUrl(uri.toString());
 
-
         } else {
-            clearApplicationData();
-            deleteCache(getApplicationContext());
-            webView.clearCache(true);
-            webView.clearFormData();
-            webView.clearHistory();
-            webView.clearMatches();
-            webView.clearSslPreferences();
             mAuth.signOut();
         }
     }
 
-    private String getRandomString() {
-        return new BigInteger(130, random).toString(32);
-    }
-
     private void sendPost(String code, String state) {
-        //POST https://github.com/login/oauth/access_token
-
         OkHttpClient okHttpClient = new OkHttpClient();
         FormBody form = new FormBody.Builder()
                 .add("client_id", getString(R.string.github_app_id))
@@ -178,7 +124,6 @@ public class GHCli extends AppCompatActivity {
                 .post(form)
                 .build();
 
-
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -188,7 +133,6 @@ public class GHCli extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                //access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&token_type=bearer
                 String responseBody = response.body().string();
                 String[] splitted = responseBody.split("=|&");
                 if (splitted[0].equalsIgnoreCase("access_token"))
@@ -206,69 +150,11 @@ public class GHCli extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
                         if (!task.isSuccessful()) {
                             task.getException().printStackTrace();
-                            Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(GHCli.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-
-    public static void deleteCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            deleteDir(dir);
-        } catch (Exception e) {}
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-            return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
-        }
-    }
-
-    public void clearApplicationData() {
-        File cacheDirectory = getCacheDir();
-        File applicationDirectory = new File(cacheDirectory.getParent());
-        if (applicationDirectory.exists()) {
-            String[] fileNames = applicationDirectory.list();
-            for (String fileName : fileNames) {
-                if (!fileName.equals("lib")) {
-                    deleteFile(new File(applicationDirectory, fileName));
-                }
-            }
-        }
-    }
-
-    public static boolean deleteFile(File file) {
-        boolean deletedAll = true;
-        if (file != null) {
-            if (file.isDirectory()) {
-                String[] children = file.list();
-                for (int i = 0; i < children.length; i++) {
-                    deletedAll = deleteFile(new File(file, children[i])) && deletedAll;
-                }
-            } else {
-                deletedAll = file.delete();
-            }
-        }
-
-        return deletedAll;
-    }
-
 }

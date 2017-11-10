@@ -10,40 +10,9 @@
     tools:context="com.github.ghcli.activities.GHCli"
     tools:showIn="@layout/activity_ghcli">
 
-    <LinearLayout
-        android:id="@+id/llGit"
-        android:orientation="vertical"
+    <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/txtGit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:text="userName and email" />
-
-    </LinearLayout>
-
-
-
-        <Button
-        android:id="@+id/btnGit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="signInOut"
-        android:text="SignIn"
-        android:layout_gravity="center" />
-
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>
