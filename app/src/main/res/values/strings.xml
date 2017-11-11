@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">GHCli</string>
     <string name="action_settings">Settings</string>
+
+    <string name="github_app_id">0119195358c7e9f01f27</string>
+    <string name="github_app_secret">99ce81b981ea876c83b9121587616426375a3152</string>
+    <string name="github_app_url">https://ghcli-7ee0f.firebaseapp.com/__/auth/handler</string>
+    <string name="sign_out">SingOut</string>
+    <string name="signed_in">SignedIn</string>
+    <string name="sign_in">SingIn</string>
+    <string name="signed_out">SignedOut</string>
+    <string name="title_activity_home_page">HomePage</string>
+
 </resources>
