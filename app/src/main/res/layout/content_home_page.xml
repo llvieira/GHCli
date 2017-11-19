@@ -8,4 +8,10 @@
     tools:context="com.github.ghcli.activities.HomePage"
     tools:showIn="@layout/activity_home_page">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Hello GHCli Users!!!"/>
+
 </android.support.constraint.ConstraintLayout>
