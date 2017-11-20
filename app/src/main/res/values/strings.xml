@@ -11,4 +11,13 @@
     <string name="action_close">Close</string>
     <string name="welcome_to_ghcli">Welcome to GHCli</string>
 
+
+    <!--Messages Login-->
+    <string name="login_failed">Login failed. Please try again!</string>
+
+    <!--Messages Connection-->
+    <string name="no_connection">No internet connection</string>
+    <string name="wait_connecting">Wait while connecting ...</string>
+
+
 </resources>
