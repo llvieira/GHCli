@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_login">
 
     <LinearLayout
-        android:id="@+id/layoutErrorConnection"
+        android:id="@+id/layout_error_connection"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="vertical"
@@ -42,13 +42,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/octocat"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="13dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_to_ghcli"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="45dp"
             android:textColor="@color/colorAccent"
             android:shadowColor="@color/colorAccent"
             android:textSize="20sp"/>

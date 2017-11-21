@@ -3,7 +3,6 @@ package com.github.ghcli.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 import com.github.ghcli.util.Connection;
-import com.github.ghcli.util.Menssages;
+import com.github.ghcli.util.Message;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +30,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.email) EditText email;
     @BindView(R.id.password) EditText password;
+    @BindView(R.id.sign_in) Button signIn;
+    @BindView(R.id.layout_error_connection) LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,33 +46,29 @@ public class LoginActivity extends AppCompatActivity {
 
         if (!Connection.isOnline(getApplicationContext())) {
             Connection.snackbarWifi(findViewById(R.id.content_login), getApplicationContext());
-            final LinearLayout linearLayout = findViewById(R.id.layoutErrorConnection);
-            final Button button = (Button) findViewById(R.id.sign_in);
-            button.setEnabled(false);
+            signIn.setEnabled(false);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while(!Connection.isOnline(getApplicationContext())){
-
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
                     }
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            button.setEnabled(true);
+                            signIn.setEnabled(true);
                             linearLayout.setVisibility(View.INVISIBLE);
                         }
                     });
 
                 }
             }).start();
-
-            return;
         }
 
         // If credentials already exists, go to home page
@@ -79,9 +76,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), HomePage.class));
             finish();
         }
-
-
-
     }
 
     @OnClick(R.id.sign_in)
@@ -106,13 +100,13 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), HomePage.class));
                     finish();
                 } else {
-                    Menssages.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                    Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<GitHubUser> call, @NonNull Throwable t) {
-                Menssages.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
             }
         });
     }
@@ -121,6 +115,4 @@ public class LoginActivity extends AppCompatActivity {
     public void closeApp() {
         finish();
     }
-
-
 }

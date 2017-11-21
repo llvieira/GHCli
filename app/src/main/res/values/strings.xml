@@ -17,7 +17,7 @@
 
     <!--Messages Connection-->
     <string name="no_connection">No internet connection</string>
-    <string name="wait_connecting">Wait while connecting ...</string>
+    <string name="wait_connecting">Wait while connecting...</string>
 
 
 </resources>
