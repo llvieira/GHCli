@@ -11,4 +11,14 @@
     <string name="signed_out">SignedOut</string>
     <string name="title_activity_home_page">HomePage</string>
 
+
+    <string name="menu_profile">Profile</string>
+    <string name="menu_repositories">Repositories</string>
+    <string name="menu_followers">Followers</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="followers_text">WELCOME TO YOUR FOLLOWERS</string>
+    <string name="profile_text">WELCOME TO YOUR PROFILE</string>
+
 </resources>
