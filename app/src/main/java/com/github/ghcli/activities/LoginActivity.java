@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
 import com.github.ghcli.models.GitHubUser;
@@ -27,11 +28,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String KEY_USER = "user";
+
+    private GitHubUser user;
 
     @BindView(R.id.email) EditText email;
     @BindView(R.id.password) EditText password;
     @BindView(R.id.sign_in) Button signIn;
     @BindView(R.id.layout_error_connection) LinearLayout linearLayout;
+    @BindView(R.id.layoutLogin) LinearLayout layoutLogin;
+    @BindView(R.id.progressBarLogin) ProgressBar progressBarLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         String credentials = Authentication.getToken(getApplicationContext());
+        layoutLogin.setVisibility(View.VISIBLE);
 
         if (!Connection.isOnline(getApplicationContext())) {
             Connection.snackbarWifi(findViewById(R.id.content_login), getApplicationContext());
@@ -51,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while(!Connection.isOnline(getApplicationContext())){
+                    while (!Connection.isOnline(getApplicationContext())) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -73,8 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // If credentials already exists, go to home page
         if (credentials != null) {
-            startActivity(new Intent(getApplicationContext(), HomePage.class));
-            finish();
+            loadUser(credentials);
         }
     }
 
@@ -85,8 +91,19 @@ public class LoginActivity extends AppCompatActivity {
 
         final String credentials = Credentials.basic(email, password);
 
+        loadUser(credentials);
+    }
+
+    @OnClick(R.id.close)
+    public void closeApp() {
+        finish();
+    }
+
+    private void loadUser(final String credentials) {
         IGitHubUser gitHubUserClient = ServiceGenerator.createService(IGitHubUser.class);
         Call<GitHubUser> call = gitHubUserClient.getUser(credentials);
+        layoutLogin.setVisibility(View.INVISIBLE);
+        progressBarLogin.setVisibility(View.VISIBLE);
 
         call.enqueue(new Callback<GitHubUser>() {
             @Override
@@ -95,24 +112,26 @@ public class LoginActivity extends AppCompatActivity {
                 // If username and password are valid information
                 // save the token and go to home page
                 if (response.isSuccessful()) {
+                    progressBarLogin.setVisibility(View.INVISIBLE);
                     Authentication.saveToken(getApplicationContext(), credentials);
-
-                    startActivity(new Intent(getApplicationContext(), HomePage.class));
+                    user = response.body();
+                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                    intent.putExtra(KEY_USER, user);
+                    startActivity(intent);
                     finish();
                 } else {
                     Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                    progressBarLogin.setVisibility(View.INVISIBLE);
+                    layoutLogin.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<GitHubUser> call, @NonNull Throwable t) {
                 Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                progressBarLogin.setVisibility(View.INVISIBLE);
+                layoutLogin.setVisibility(View.VISIBLE);
             }
         });
-    }
-
-    @OnClick(R.id.close)
-    public void closeApp() {
-        finish();
     }
 }

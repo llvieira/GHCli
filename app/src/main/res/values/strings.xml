@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">GHCli</string>
     <string name="action_settings">Settings</string>
@@ -19,5 +20,13 @@
     <string name="no_connection">No internet connection</string>
     <string name="wait_connecting">Wait while connecting...</string>
 
+    <!--Messages Profile-->
+    <string name="profile_text">Profile</string>
+    <string name="nome_default_user">Nome</string>
 
+    <string name="menu_profile">Profile</string>
+    <string name="menu_repos">Repositories</string>
+    <string name="menu_followers">Followers</string>
+
+    <string name="repos_text">WELCOME TO YOUR REPOSITORIES</string>
 </resources>
