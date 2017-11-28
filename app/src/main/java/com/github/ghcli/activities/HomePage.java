@@ -1,44 +1,29 @@
 package com.github.ghcli.activities;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
 
 
 import com.github.ghcli.R;
-import com.github.ghcli.models.GitHubUser;
-import com.github.ghcli.service.ServiceGenerator;
-import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
-import com.github.ghcli.util.Message;
-import com.squareup.picasso.Picasso;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
-    private static final String KEY_USER = "user";
+
 
     private BottomNavigationView navBar;
     private int mSelectedItem;
-
-    private GitHubUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +41,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             }
         });
 
-        // get user from login page
-        Intent intent = getIntent();
-        this.user = intent.getParcelableExtra(KEY_USER);
-
+        // TODO: Showing token here only for tests, remove it.
         Log.d("TOKEN", Authentication.getToken(getApplicationContext()));
 
         MenuItem selectedItem;
@@ -68,7 +50,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
             selectedItem = navBar.getMenu().findItem(mSelectedItem);
         } else {
-            selectedItem = navBar.getMenu().getItem(2);
+            selectedItem = navBar.getMenu().getItem(1);
         }
         selectFragment(selectedItem);
     }
@@ -78,7 +60,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         // init corresponding fragment
         switch (item.getItemId()) {
             case R.id.navbar_profile:
-                frag = ProfileFragment.newInstance(user);
+                frag = ProfileFragment.newInstance("test1","test2");
                 break;
             case R.id.navbar_repos:
                 frag = ReposFragment.newInstance("teste1","teste2");
