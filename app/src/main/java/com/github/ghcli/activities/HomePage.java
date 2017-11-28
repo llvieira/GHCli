@@ -1,29 +1,50 @@
 package com.github.ghcli.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.github.ghcli.R;
+import com.github.ghcli.models.GitHubUser;
+import com.github.ghcli.service.ServiceGenerator;
+import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
+import com.github.ghcli.util.Message;
+import com.squareup.picasso.Picasso;
 
-public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
-
+    private static final String KEY_USER = "user";
 
     private BottomNavigationView navBar;
     private int mSelectedItem;
 
+    private GitHubUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_home_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         navBar = (BottomNavigationView) findViewById(R.id.navigation);
@@ -35,7 +56,10 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             }
         });
 
-        // TODO: Showing token here only for tests, remove it.
+        // get user from login page
+        Intent intent = getIntent();
+        this.user = intent.getParcelableExtra(KEY_USER);
+
         Log.d("TOKEN", Authentication.getToken(getApplicationContext()));
 
         MenuItem selectedItem;
@@ -44,7 +68,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
             selectedItem = navBar.getMenu().findItem(mSelectedItem);
         } else {
-            selectedItem = navBar.getMenu().getItem(1);
+            selectedItem = navBar.getMenu().getItem(2);
         }
         selectFragment(selectedItem);
     }
@@ -53,11 +77,14 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         Fragment frag = null;
         // init corresponding fragment
         switch (item.getItemId()) {
-            case R.id.menu_profile:
-                frag = ProfileFragment.newInstance("test1","test2");
+            case R.id.navbar_profile:
+                frag = ProfileFragment.newInstance(user);
                 break;
-            case R.id.menu_followers:
-                frag = FollowersFragment.newInstance("teste1","teste2");
+            case R.id.navbar_repos:
+                frag = ReposFragment.newInstance("teste1","teste2");
+                break;
+            case R.id.navbar_followers:
+                frag = FollowersFragment.newInstance("teste1", "teste2");
                 break;
         }
 

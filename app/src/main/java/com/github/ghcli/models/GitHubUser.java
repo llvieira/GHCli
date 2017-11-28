@@ -1,8 +1,11 @@
 package com.github.ghcli.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class GitHubUser {
+public class GitHubUser implements Parcelable {
 
     private String login;
     private String name;
@@ -20,6 +23,25 @@ public class GitHubUser {
         this.type = type;
         this.avatarUrl = avatarUrl;
     }
+
+    protected GitHubUser(Parcel in) {
+        login = in.readString();
+        name = in.readString();
+        type = in.readString();
+        avatarUrl = in.readString();
+    }
+
+    public static final Creator<GitHubUser> CREATOR = new Creator<GitHubUser>() {
+        @Override
+        public GitHubUser createFromParcel(Parcel in) {
+            return new GitHubUser(in);
+        }
+
+        @Override
+        public GitHubUser[] newArray(int size) {
+            return new GitHubUser[size];
+        }
+    };
 
     public String getLogin() {
         return login;
@@ -61,5 +83,40 @@ public class GitHubUser {
                 ", type='" + type + '\'' +
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return this.hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(login);
+        parcel.writeString(name);
+        parcel.writeString(type);
+        parcel.writeString(avatarUrl);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GitHubUser that = (GitHubUser) o;
+
+        if (login != null ? !login.equals(that.login) : that.login != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        return avatarUrl != null ? avatarUrl.equals(that.avatarUrl) : that.avatarUrl == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = login != null ? login.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (avatarUrl != null ? avatarUrl.hashCode() : 0);
+        return result;
     }
 }

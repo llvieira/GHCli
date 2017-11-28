@@ -12,13 +12,20 @@
     <string name="welcome_to_ghcli">Welcome to GHCli</string>
 
 
+    <!--Messages Login-->
+    <string name="login_failed">Login failed. Please try again!</string>
+
+    <!--Messages Connection-->
+    <string name="no_connection">No internet connection</string>
+    <string name="wait_connecting">Wait while connecting...</string>
+
+    <!--Messages Profile-->
+    <string name="profile_text">Profile</string>
+    <string name="nome_default_user">Nome</string>
+
     <string name="menu_profile">Profile</string>
-    <string name="menu_repositories">Repositories</string>
+    <string name="menu_repos">Repositories</string>
     <string name="menu_followers">Followers</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="followers_text">WELCOME TO YOUR FOLLOWERS</string>
-    <string name="profile_text">WELCOME TO YOUR PROFILE</string>
-
+    <string name="repos_text">WELCOME TO YOUR REPOSITORIES</string>
 </resources>

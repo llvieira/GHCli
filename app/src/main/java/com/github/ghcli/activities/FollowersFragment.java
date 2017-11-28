@@ -3,12 +3,30 @@ package com.github.ghcli.activities;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListFollowersAdapter;
+import com.github.ghcli.models.GitHubUser;
+import com.github.ghcli.service.ServiceGenerator;
+import com.github.ghcli.service.clients.IGitHubUser;
+import com.github.ghcli.util.Authentication;
+
+import java.io.IOException;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,16 +37,18 @@ import com.github.ghcli.R;
  * create an instance of this fragment.
  */
 public class FollowersFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.followers_recyclerView) RecyclerView recyclerView;
+
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private IGitHubUser iGitHubUser;
+    private Context context;
 
     public FollowersFragment() {
         // Required empty public constructor
@@ -42,14 +62,40 @@ public class FollowersFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment FollowersFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static FollowersFragment newInstance(String param1, String param2) {
         FollowersFragment fragment = new FollowersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        fragment.setiGitHubUser(ServiceGenerator.createService(IGitHubUser.class));
         return fragment;
+    }
+
+    private void getFollowers() {
+        Call<List<GitHubUser>> callFollowers = iGitHubUser.getFollowers(Authentication.getToken(context));
+        progressBar.setVisibility(View.VISIBLE);
+        callFollowers.enqueue(new Callback<List<GitHubUser>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<GitHubUser>> call,
+                                   @NonNull Response<List<GitHubUser>> response) {
+                if (response.isSuccessful()) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    List<GitHubUser> followers = response.body();
+                    recyclerView.setAdapter(new ListFollowersAdapter(followers, context, iGitHubUser));
+                    RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                            context,
+                            LinearLayoutManager.VERTICAL,
+                            false);
+                    recyclerView.setLayoutManager(layout);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GitHubUser>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -65,10 +111,13 @@ public class FollowersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_followers, container, false);
+        View view = inflater.inflate(R.layout.fragment_followers, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getActivity().getApplicationContext();
+        getFollowers();
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -92,6 +141,15 @@ public class FollowersFragment extends Fragment {
         mListener = null;
     }
 
+    public IGitHubUser getiGitHubUser() {
+        return iGitHubUser;
+    }
+
+    public void setiGitHubUser(IGitHubUser iGitHubUser) {
+        this.iGitHubUser = iGitHubUser;
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -103,7 +161,6 @@ public class FollowersFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
