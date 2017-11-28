@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             }).start();
         }
 
-        // If credentials already exists, get user and go to home page
+        // If credentials already exists, go to home page
         if (credentials != null) {
             loadUser(credentials);
         }
