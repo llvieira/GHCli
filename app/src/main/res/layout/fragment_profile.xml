@@ -7,32 +7,31 @@
     tools:context="com.github.ghcli.activities.ProfileFragment">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="301dp"
-        android:layout_height="414dp"
+        android:layout_width="333dp"
+        android:layout_height="442dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="367dp"
-            android:layout_height="wrap_content"
+            android:layout_height="439dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="28dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintHorizontal_bias="0.142"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.511">
+            app:layout_constraintVertical_bias="0.787">
 
             <ImageView
                 android:id="@+id/profileImage"
@@ -52,7 +51,7 @@
             <TextView
                 android:id="@+id/profileName"
                 android:layout_width="272dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -60,7 +59,8 @@
                 android:fontFamily="@font/montserrat"
                 android:text="@string/nome_default_user"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textColor="@android:color/background_dark"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +68,23 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.904" />
+
+            <TextView
+                android:id="@+id/profileLogin"
+                android:layout_width="278dp"
+                android:layout_height="51dp"
+                android:text="@string/login_default_user"
+                android:textAlignment="center"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/profileBio"
+                android:layout_width="286dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>

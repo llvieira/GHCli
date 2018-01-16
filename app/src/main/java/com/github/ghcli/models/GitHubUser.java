@@ -10,6 +10,7 @@ public class GitHubUser implements Parcelable {
     private String login;
     private String name;
     private String type;
+    private String bio;
 
     @SerializedName("avatar_url")
     private String avatarUrl;
@@ -17,10 +18,11 @@ public class GitHubUser implements Parcelable {
     public GitHubUser() {
     }
 
-    public GitHubUser(String login, String name, String type, String avatarUrl) {
+    public GitHubUser(String login, String name, String type, String bio, String avatarUrl) {
         this.login = login;
         this.name = name;
         this.type = type;
+        this.bio = bio;
         this.avatarUrl = avatarUrl;
     }
 
@@ -28,6 +30,7 @@ public class GitHubUser implements Parcelable {
         login = in.readString();
         name = in.readString();
         type = in.readString();
+        bio = in.readString();
         avatarUrl = in.readString();
     }
 
@@ -67,6 +70,10 @@ public class GitHubUser implements Parcelable {
         this.type = type;
     }
 
+    public String getBio() { return bio; }
+
+    public void setBio(String bio) { this.bio = bio; }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -81,6 +88,7 @@ public class GitHubUser implements Parcelable {
                 "login='" + login + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
+                ", bio='" + bio + '\'' +
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
@@ -95,6 +103,7 @@ public class GitHubUser implements Parcelable {
         parcel.writeString(login);
         parcel.writeString(name);
         parcel.writeString(type);
+        parcel.writeString(bio);
         parcel.writeString(avatarUrl);
     }
 
@@ -108,6 +117,7 @@ public class GitHubUser implements Parcelable {
         if (login != null ? !login.equals(that.login) : that.login != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (bio != null ? !bio.equals(that.bio) : that.bio != null) return false;
         return avatarUrl != null ? avatarUrl.equals(that.avatarUrl) : that.avatarUrl == null;
     }
 
@@ -116,6 +126,7 @@ public class GitHubUser implements Parcelable {
         int result = login != null ? login.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (bio != null ? bio.hashCode() : 0);
         result = 31 * result + (avatarUrl != null ? avatarUrl.hashCode() : 0);
         return result;
     }

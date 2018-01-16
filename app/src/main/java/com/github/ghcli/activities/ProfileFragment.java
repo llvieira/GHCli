@@ -46,6 +46,8 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.profileImage) ImageView profileImage;
     @BindView(R.id.profileName) TextView profileName;
+    @BindView(R.id.profileLogin) TextView profileLogin;
+    @BindView(R.id.profileBio) TextView profileBio;
     @BindView(R.id.imageGit) ImageView imageGit;
 
     public ProfileFragment() {
@@ -85,6 +87,8 @@ public class ProfileFragment extends Fragment {
         Picasso.with(view.getContext()).load(user.getAvatarUrl()).transform(new CropCircleTransformation()).error(R.mipmap.octocat).into(profileImage);
         Picasso.with(view.getContext()).load(PATH_IMAGE_GIT).transform(new CropCircleTransformation()).error(R.mipmap.octocat).into(imageGit);
         profileName.setText(user.getName());
+        profileLogin.setText(user.getLogin());
+        profileBio.setText(user.getBio());
 
         return view;
     }
