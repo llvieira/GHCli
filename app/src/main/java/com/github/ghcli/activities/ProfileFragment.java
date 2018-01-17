@@ -39,7 +39,6 @@ import static android.graphics.Bitmap.createBitmap;
 
 public class ProfileFragment extends Fragment {
     private static final String ARG_USER = "user";
-    private static final String PATH_IMAGE_GIT = "https://assets-cdn.github.com/images/modules/open_graph/github-mark.png";
 
     private OnFragmentInteractionListener mListener;
     private GitHubUser user;
@@ -48,7 +47,8 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profileName) TextView profileName;
     @BindView(R.id.profileLogin) TextView profileLogin;
     @BindView(R.id.profileBio) TextView profileBio;
-    @BindView(R.id.imageGit) ImageView imageGit;
+    @BindView(R.id.profileEmail) TextView profileEmail;
+    @BindView(R.id.profileLocation) TextView profileLocation;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -85,10 +85,11 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Picasso.with(view.getContext()).load(user.getAvatarUrl()).transform(new CropCircleTransformation()).error(R.mipmap.octocat).into(profileImage);
-        Picasso.with(view.getContext()).load(PATH_IMAGE_GIT).transform(new CropCircleTransformation()).error(R.mipmap.octocat).into(imageGit);
         profileName.setText(user.getName());
         profileLogin.setText(user.getLogin());
         profileBio.setText(user.getBio());
+        profileEmail.setText(user.getEmail());
+        profileLocation.setText(user.getLocation());
 
         return view;
     }

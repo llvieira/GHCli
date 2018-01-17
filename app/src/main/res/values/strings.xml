@@ -24,6 +24,9 @@
     <string name="profile_text">Profile</string>
     <string name="nome_default_user">Nome</string>
     <string name="login_default_user">Login</string>
+    <string name="email_default_user">Email</string>
+    <string name="location_default_user">Location</string>
+    <string name="profile_organization">Organizations</string>
 
     <string name="menu_profile">Profile</string>
     <string name="menu_repos">Repositories</string>

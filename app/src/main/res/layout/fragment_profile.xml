@@ -6,22 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.github.ghcli.activities.ProfileFragment">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="333dp"
-        android:layout_height="442dp"
+    <ScrollView
+        android:layout_width="338dp"
+        android:layout_height="584dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
-            android:layout_width="367dp"
-            android:layout_height="439dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="28dp"
@@ -32,6 +33,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.787">
+
+            <TextView
+                android:id="@+id/textPerfil"
+                android:layout_width="295dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/profile_text"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/profileImage"
@@ -71,8 +83,8 @@
 
             <TextView
                 android:id="@+id/profileLogin"
-                android:layout_width="278dp"
-                android:layout_height="51dp"
+                android:layout_width="281dp"
+                android:layout_height="37dp"
                 android:text="@string/login_default_user"
                 android:textAlignment="center"
                 android:textColor="@android:color/darker_gray"
@@ -86,57 +98,72 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
-        </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/whiteSpace"
+                android:layout_width="280dp"
+                android:layout_height="12dp"
+                android:layout_weight="1" />
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="323dp"
-        android:layout_height="54dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <LinearLayout
-            android:layout_width="329dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.545"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.017">
-
-            <ImageView
-                android:id="@+id/imageGit"
-                android:layout_width="119dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@mipmap/octocat" />
+            <View
+                android:id="@+id/line"
+                android:layout_width="298dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark" />
 
             <TextView
-                android:id="@+id/textPerfil"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/whiteSpace2"
+                android:layout_width="281dp"
+                android:layout_height="11dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/profileEmail"
+                android:layout_width="283dp"
+                android:layout_height="24dp"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:text="@string/profile_text"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:text="@string/email_default_user"
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profileLocation"
+                android:layout_width="283dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:text="@string/location_default_user"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/whiteSpace3"
+                android:layout_width="284dp"
+                android:layout_height="11dp"
+                android:layout_weight="1" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="300dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/whiteSpace4"
+                android:layout_width="match_parent"
+                android:layout_height="11dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/profileOrganization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/profile_organization"
+                android:textSize="18sp" />
 
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
