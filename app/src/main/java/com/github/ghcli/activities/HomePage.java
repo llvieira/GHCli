@@ -20,12 +20,15 @@ import android.widget.TextView;
 
 
 import com.github.ghcli.R;
+import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 import com.github.ghcli.util.Message;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,11 +39,13 @@ import retrofit2.Response;
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static final String KEY_USER = "user";
+    private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private BottomNavigationView navBar;
     private int mSelectedItem;
 
     private GitHubUser user;
+    private ArrayList<GitHubOrganization> userOrganizations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         // get user from login page
         Intent intent = getIntent();
         this.user = intent.getParcelableExtra(KEY_USER);
+        this.userOrganizations = intent.getParcelableArrayListExtra(KEY_USER_ORGANIZATIONS);
 
         Log.d("TOKEN", Authentication.getToken(getApplicationContext()));
 
@@ -80,7 +86,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         // init corresponding fragment
         switch (item.getItemId()) {
             case R.id.navbar_profile:
-                frag = ProfileFragment.newInstance(user);
+                frag = ProfileFragment.newInstance(user, userOrganizations);
                 break;
             case R.id.navbar_repos:
                 frag = ReposFragment.newInstance("teste1","teste2");

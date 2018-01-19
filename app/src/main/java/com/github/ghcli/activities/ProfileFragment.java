@@ -1,47 +1,39 @@
 package com.github.ghcli.activities;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.net.Uri;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListOrganizationsAdapter;
+import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
-import com.github.ghcli.service.ServiceGenerator;
-import com.github.ghcli.service.clients.IGitHubUser;
-import com.github.ghcli.util.Authentication;
-import com.github.ghcli.util.Message;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.graphics.Bitmap.createBitmap;
 
 public class ProfileFragment extends Fragment {
     private static final String ARG_USER = "user";
+    private static final String ARG_USER_ORGANIZATIONS = "organizations";
 
     private OnFragmentInteractionListener mListener;
     private GitHubUser user;
+    private List<GitHubOrganization> userOrganizations;
 
     @BindView(R.id.profileImage) ImageView profileImage;
     @BindView(R.id.profileName) TextView profileName;
@@ -49,6 +41,9 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profileBio) TextView profileBio;
     @BindView(R.id.profileEmail) TextView profileEmail;
     @BindView(R.id.profileLocation) TextView profileLocation;
+    @BindView(R.id.profileOrganizations) TextView profileOrganizations;
+    @BindView(R.id.lineOrganizations) View lineOrganizations;
+    @BindView(R.id.organizationsRecyclerView) RecyclerView organizationsRecyclerView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -60,12 +55,18 @@ public class ProfileFragment extends Fragment {
      *
      * @return A new instance of fragment ProfileFragment.
      */
-    public static ProfileFragment newInstance(GitHubUser user) {
+    public static ProfileFragment newInstance(GitHubUser user, ArrayList<GitHubOrganization> userOrganizations) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
+
         if (user != null) {
             args.putParcelable(ARG_USER, user);
         }
+
+        if (userOrganizations != null) {
+            args.putParcelableArrayList(ARG_USER_ORGANIZATIONS, userOrganizations);
+        }
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,6 +76,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER);
+            userOrganizations = getArguments().getParcelableArrayList(ARG_USER_ORGANIZATIONS);
         }
     }
 
@@ -85,11 +87,39 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         Picasso.with(view.getContext()).load(user.getAvatarUrl()).transform(new CropCircleTransformation()).error(R.mipmap.octocat).into(profileImage);
-        profileName.setText(user.getName());
-        profileLogin.setText(user.getLogin());
-        profileBio.setText(user.getBio());
-        profileEmail.setText(user.getEmail());
-        profileLocation.setText(user.getLocation());
+
+        if(user.getName() != null) {
+            profileName.setText(user.getName());
+        }
+
+        if(user.getLogin() != null) {
+            profileLogin.setText(user.getLogin());
+        }
+
+        if(user.getBio() != null) {
+            profileBio.setText(user.getBio());
+        }
+
+        if(user.getEmail() != null) {
+            profileEmail.setText(user.getEmail());
+        }
+
+        if(user.getLocation() != null) {
+            profileLocation.setText(user.getLocation());
+        }
+
+        if(userOrganizations != null && !userOrganizations.isEmpty()) {
+            organizationsRecyclerView.setAdapter(new ListOrganizationsAdapter(userOrganizations));
+            RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                    getActivity().getApplicationContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false);
+            organizationsRecyclerView.setLayoutManager(layout);
+        } else {
+            lineOrganizations.setVisibility(View.INVISIBLE);
+            profileOrganizations.setVisibility(View.INVISIBLE);
+            organizationsRecyclerView.setVisibility(View.INVISIBLE);
+        }
 
         return view;
     }
@@ -122,7 +152,7 @@ public class ProfileFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p>***
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

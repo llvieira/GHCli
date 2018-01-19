@@ -8,11 +8,12 @@
 
     <ScrollView
         android:layout_width="338dp"
-        android:layout_height="584dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:paddingBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.771"
@@ -94,73 +95,62 @@
                 android:id="@+id/profileBio"
                 android:layout_width="286dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="12dp"
+                android:text="@string/bio_default_user"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/whiteSpace"
-                android:layout_width="280dp"
-                android:layout_height="12dp"
-                android:layout_weight="1" />
-
             <View
                 android:id="@+id/line"
-                android:layout_width="298dp"
+                android:layout_width="300dp"
                 android:layout_height="1dp"
                 android:background="@color/colorPrimaryDark" />
 
             <TextView
-                android:id="@+id/whiteSpace2"
-                android:layout_width="281dp"
-                android:layout_height="11dp"
-                android:layout_weight="1" />
-
-            <TextView
                 android:id="@+id/profileEmail"
-                android:layout_width="283dp"
-                android:layout_height="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:paddingTop="12dp"
                 android:text="@string/email_default_user"
                 android:textAlignment="textStart"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/profileLocation"
-                android:layout_width="283dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:paddingBottom="12dp"
                 android:text="@string/location_default_user"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/whiteSpace3"
-                android:layout_width="284dp"
-                android:layout_height="11dp"
-                android:layout_weight="1" />
-
             <View
-                android:id="@+id/line2"
+                android:id="@+id/lineOrganizations"
                 android:layout_width="300dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="@color/colorPrimaryDark" />
 
             <TextView
-                android:id="@+id/whiteSpace4"
-                android:layout_width="match_parent"
-                android:layout_height="11dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/profileOrganization"
+                android:id="@+id/profileOrganizations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp"
                 android:text="@string/profile_organization"
                 android:textSize="18sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/organizationsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingBottom="20dp" />
 
         </LinearLayout>
 
