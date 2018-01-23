@@ -11,10 +11,6 @@ import com.github.ghcli.models.GitHubOrganization;
 
 import java.util.List;
 
-/**
- * Created by davi on 18/01/2018.
- */
-
 public class ListOrganizationsAdapter extends RecyclerView.Adapter<OrganizationsViewHolder> {
 
     private List<GitHubOrganization> organizations;

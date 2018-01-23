@@ -11,10 +11,6 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by davi on 18/01/2018.
- */
-
 public class OrganizationsViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.organization_login) TextView loginOrganization;

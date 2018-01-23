@@ -5,10 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by davi on 18/01/2018.
- */
-
 public class GitHubOrganization implements Parcelable {
 
     private String login;
