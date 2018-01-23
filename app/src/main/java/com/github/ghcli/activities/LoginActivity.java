@@ -2,6 +2,7 @@ package com.github.ghcli.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,12 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 import com.github.ghcli.util.Connection;
 import com.github.ghcli.util.Message;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +36,10 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String KEY_USER = "user";
+    private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private GitHubUser user;
+    private ArrayList<GitHubOrganization> userOrganizations;
 
     @BindView(R.id.email) EditText email;
     @BindView(R.id.password) EditText password;
@@ -100,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loadUser(final String credentials) {
-        IGitHubUser gitHubUserClient = ServiceGenerator.createService(IGitHubUser.class);
+        final IGitHubUser gitHubUserClient = ServiceGenerator.createService(IGitHubUser.class);
         Call<GitHubUser> call = gitHubUserClient.getUser(credentials);
         layoutLogin.setVisibility(View.INVISIBLE);
         progressBarLogin.setVisibility(View.VISIBLE);
@@ -109,16 +118,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<GitHubUser> call,
                                    @NonNull Response<GitHubUser> response) {
-                // If username and password are valid information
-                // save the token and go to home page
                 if (response.isSuccessful()) {
-                    progressBarLogin.setVisibility(View.INVISIBLE);
-                    Authentication.saveToken(getApplicationContext(), credentials);
                     user = response.body();
-                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
-                    intent.putExtra(KEY_USER, user);
-                    startActivity(intent);
-                    finish();
+
+                    loadUserOrgs(credentials, gitHubUserClient);
                 } else {
                     Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
                     progressBarLogin.setVisibility(View.INVISIBLE);
@@ -133,5 +136,41 @@ public class LoginActivity extends AppCompatActivity {
                 layoutLogin.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void loadUserOrgs(final String credentials, IGitHubUser gitHubUserClient) {
+        Call<ArrayList<GitHubOrganization>> call = gitHubUserClient.getUserOrgs(credentials);
+
+        call.enqueue(new Callback<ArrayList<GitHubOrganization>>() {
+            @Override
+            public void onResponse(Call<ArrayList<GitHubOrganization>> call, Response<ArrayList<GitHubOrganization>> response) {
+
+                // If username and password are valid information
+                // save the token and go to home page
+                if (response.isSuccessful()) {
+                    progressBarLogin.setVisibility(View.INVISIBLE);
+                    Authentication.saveToken(getApplicationContext(), credentials);
+                    userOrganizations = response.body();
+
+                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                    intent.putExtra(KEY_USER, user);
+                    intent.putParcelableArrayListExtra(KEY_USER_ORGANIZATIONS, userOrganizations);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                    progressBarLogin.setVisibility(View.INVISIBLE);
+                    layoutLogin.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<GitHubOrganization>> call, Throwable t) {
+                Message.showSnackbar(getString(R.string.login_failed), findViewById(R.id.content_login));
+                progressBarLogin.setVisibility(View.INVISIBLE);
+                layoutLogin.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 }

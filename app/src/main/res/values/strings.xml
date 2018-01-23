@@ -22,7 +22,12 @@
 
     <!--Messages Profile-->
     <string name="profile_text">Profile</string>
-    <string name="nome_default_user">Nome</string>
+    <string name="nome_default_user">Unnamed</string>
+    <string name="login_default_user">No Login</string>
+    <string name="email_default_user">No Email</string>
+    <string name="location_default_user">No Location</string>
+    <string name="bio_default_user">No Description</string>
+    <string name="profile_organization">Organizations</string>
 
     <string name="menu_profile">Profile</string>
     <string name="menu_repos">Repositories</string>

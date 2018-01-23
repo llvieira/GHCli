@@ -1,7 +1,9 @@
 package com.github.ghcli.service.clients;
 
+import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -18,6 +20,9 @@ public interface IGitHubUser {
 
     @GET("user")
     Call<GitHubUser> getUser(@Header("Authorization") String credentials);
+
+    @GET("user/orgs")
+    Call<ArrayList<GitHubOrganization>> getUserOrgs(@Header("Authorization") String credentials);
 
     @GET("user/followers")
     Call<List<GitHubUser>> getFollowers(@Header("Authorization") String credentials);
