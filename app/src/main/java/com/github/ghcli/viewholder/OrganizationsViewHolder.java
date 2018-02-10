@@ -1,4 +1,4 @@
-package com.github.ghcli.ViewHolder;
+package com.github.ghcli.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

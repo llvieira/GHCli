@@ -1,4 +1,4 @@
-package com.github.ghcli.ViewHolder;
+package com.github.ghcli.viewholder;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,8 +13,6 @@ import com.github.ghcli.R;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

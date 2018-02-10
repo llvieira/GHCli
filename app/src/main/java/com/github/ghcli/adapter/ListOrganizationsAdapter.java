@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.ghcli.R;
-import com.github.ghcli.ViewHolder.OrganizationsViewHolder;
+import com.github.ghcli.viewholder.OrganizationsViewHolder;
 import com.github.ghcli.models.GitHubOrganization;
 
 import java.util.List;

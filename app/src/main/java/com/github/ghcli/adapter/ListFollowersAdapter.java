@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.ghcli.R;
-import com.github.ghcli.ViewHolder.FollowersViewHolder;
+import com.github.ghcli.viewholder.FollowersViewHolder;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.clients.IGitHubUser;
 
