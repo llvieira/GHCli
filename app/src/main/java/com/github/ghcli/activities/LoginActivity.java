@@ -2,7 +2,6 @@ package com.github.ghcli.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,10 +20,7 @@ import com.github.ghcli.util.Authentication;
 import com.github.ghcli.util.Connection;
 import com.github.ghcli.util.Message;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
