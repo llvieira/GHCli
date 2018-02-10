@@ -98,6 +98,13 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         }
     }
 
+    public void logout() {
+        Authentication.removeToken(getApplicationContext());
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
