@@ -1,4 +1,4 @@
-package com.github.ghcli.activities;
+package com.github.ghcli.fragments;
 
 import android.content.Context;
 import android.net.Uri;

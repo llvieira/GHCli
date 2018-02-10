@@ -1,4 +1,4 @@
-package com.github.ghcli.activities;
+package com.github.ghcli.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,7 +19,6 @@ import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;

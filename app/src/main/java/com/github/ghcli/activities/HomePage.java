@@ -1,40 +1,26 @@
 package com.github.ghcli.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
-import android.view.MenuItem;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import android.view.MenuItem;
 
 import com.github.ghcli.R;
+import com.github.ghcli.fragments.FollowersFragment;
+import com.github.ghcli.fragments.ProfileFragment;
+import com.github.ghcli.fragments.ReposFragment;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
-import com.github.ghcli.service.ServiceGenerator;
-import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
-import com.github.ghcli.util.Message;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
@@ -53,8 +39,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_home_page);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        navBar = (BottomNavigationView) findViewById(R.id.navigation);
+        navBar = findViewById(R.id.navigation);
         navBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
