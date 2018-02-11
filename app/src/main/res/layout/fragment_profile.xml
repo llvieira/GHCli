@@ -101,9 +101,11 @@
 
             <View
                 android:id="@+id/line"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" />
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:layout_marginStart="10dp"
@@ -132,10 +134,12 @@
 
             <View
                 android:id="@+id/lineOrganizations"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimaryDark" />
+                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:layout_marginStart="10dp"
