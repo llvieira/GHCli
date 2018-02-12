@@ -1,5 +1,6 @@
 package com.github.ghcli.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,11 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListActionsDrawerAdapter;
 import com.github.ghcli.fragments.FollowersFragment;
 import com.github.ghcli.fragments.ProfileFragment;
 import com.github.ghcli.fragments.ReposFragment;
@@ -22,6 +28,8 @@ import com.github.ghcli.util.Authentication;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static final String KEY_USER = "user";
@@ -29,6 +37,9 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
 
     private BottomNavigationView navBar;
     private int mSelectedItem;
+
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.left_drawer) RecyclerView leftDrawer;
 
     private GitHubUser user;
     private ArrayList<GitHubOrganization> userOrganizations;
@@ -57,6 +68,14 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
 
         MenuItem selectedItem;
 
+        Context context = getApplicationContext();
+        leftDrawer.setAdapter(new ListActionsDrawerAdapter(context));
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                context,
+                LinearLayoutManager.VERTICAL,
+                false
+        );
+        leftDrawer.setLayoutManager(layout);
         if (savedInstanceState != null) {
             mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
             selectedItem = navBar.getMenu().findItem(mSelectedItem);
