@@ -42,7 +42,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
     private int mSelectedItem;
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Followers", "Sign out"};
+    private String[] actions = {"Profile", "Repositories", "Followers", "Issues",  "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -150,6 +150,9 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
                 frag = FollowersFragment.newInstance("teste1", "teste2");
                 break;
             case 3:
+                // TODO Set the Issue fragment on this case.
+                break;
+            case 4:
                 logout();
                 break;
         }
