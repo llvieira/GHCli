@@ -33,5 +33,8 @@
     <string name="menu_repos">Repositories</string>
     <string name="menu_followers">Followers</string>
 
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <string name="repos_text">WELCOME TO YOUR REPOSITORIES</string>
 </resources>
