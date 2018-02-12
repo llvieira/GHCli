@@ -65,7 +65,6 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
 
         Log.d("TOKEN", Authentication.getToken(getApplicationContext()));
 
-        final MenuItem selectedItem;
 
         leftDrawer.setAdapter(new ArrayAdapter<String>(
                 this,
@@ -79,23 +78,21 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         });
 
         drawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                drawerLayout,         /* DrawerLayout object */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
+                this,
+                drawerLayout,
+                R.string.drawer_open,
+                R.string.drawer_close
         ) {
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
 
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 leftDrawer.bringToFront();
                 drawerLayout.requestLayout();
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
         };
 
@@ -107,14 +104,12 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
     }
 
@@ -126,12 +121,9 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
