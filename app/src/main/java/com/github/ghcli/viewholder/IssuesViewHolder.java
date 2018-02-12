@@ -1,5 +1,6 @@
 package com.github.ghcli.viewholder;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -33,7 +34,15 @@ public class IssuesViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setIssueState(String issueState) {
-        this.issueState.setText(issueState);
+        if (issueState != null && issueState.equals("closed")) {
+            this.issueState.setTextColor(Color.RED);
+        } else {
+            this.issueState.setTextColor(Color.BLUE);
+        }
+
+        String newStr = issueState.substring(0, 1).toUpperCase() + issueState.substring(1);
+
+        this.issueState.setText(newStr);
     }
 
     public TextView getIssueTitle() {
@@ -49,6 +58,11 @@ public class IssuesViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setIssueBody(String issueBody) {
-        this.issueBody.setText(issueBody);
+        if (issueBody != null && issueBody.isEmpty()) {
+            this.issueBody.setText("No description...");
+
+        } else {
+            this.issueBody.setText(issueBody);
+        }
     }
 }
