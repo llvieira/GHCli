@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import com.github.ghcli.R;
 import com.github.ghcli.fragments.FollowersFragment;
+import com.github.ghcli.fragments.IssuesFragment;
 import com.github.ghcli.fragments.ProfileFragment;
 import com.github.ghcli.fragments.ReposFragment;
 import com.github.ghcli.models.GitHubOrganization;
@@ -30,8 +31,12 @@ import com.github.ghcli.util.Authentication;
 
 import java.util.ArrayList;
 
+public class HomePage extends AppCompatActivity implements
+        ProfileFragment.OnFragmentInteractionListener,
+        FollowersFragment.OnFragmentInteractionListener,
+        ReposFragment.OnFragmentInteractionListener,
+        IssuesFragment.OnFragmentInteractionListener {
 
-public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static final String COLOR_ACTION_ITEM = "#444444";
     private static final String COLOR_BACKGROUND_LISTVIEW = "#111111";
@@ -139,7 +144,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
                 frag = FollowersFragment.newInstance("teste1", "teste2");
                 break;
             case 3:
-                // TODO Set the Issue fragment on this case.
+                frag = IssuesFragment.newInstance("teste1","teste2");
                 break;
             case 4:
                 logout();
@@ -176,9 +181,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
         finish();
     }
 
-
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
-    //heavily based on https://github.com/segunfamisa/bottom-navigation-demo/blob/master/app/src/main/java/com/segunfamisa/sample/bottomnav/MainActivity.java
 }
