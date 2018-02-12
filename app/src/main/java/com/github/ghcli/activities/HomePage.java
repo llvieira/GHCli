@@ -34,12 +34,9 @@ import java.util.ArrayList;
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static final String COLOR_ACTION_ITEM = "#444444";
-    private static final String COLO_BACKGROUND_LISTVIEW = "#111111";
+    private static final String COLOR_BACKGROUND_LISTVIEW = "#111111";
     private static final String KEY_USER = "user";
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
-
-    //private BottomNavigationView navBar;
-    private int mSelectedItem;
 
     private DrawerLayout drawerLayout;
     private String[] actions = {"Profile", "Repositories", "Followers", "Issues",  "Sign out"};
@@ -167,7 +164,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             if (i == position) {
                 leftDrawer.getChildAt(i).setBackgroundColor(Color.parseColor(COLOR_ACTION_ITEM));
             } else {
-                leftDrawer.getChildAt(i).setBackgroundColor(Color.parseColor(COLO_BACKGROUND_LISTVIEW));
+                leftDrawer.getChildAt(i).setBackgroundColor(Color.parseColor(COLOR_BACKGROUND_LISTVIEW));
             }
         }
     }
