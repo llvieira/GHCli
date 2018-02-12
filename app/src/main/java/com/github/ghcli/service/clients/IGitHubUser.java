@@ -1,5 +1,6 @@
 package com.github.ghcli.service.clients;
 
+import com.github.ghcli.models.GitHubIssues;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 
@@ -29,6 +30,9 @@ public interface IGitHubUser {
 
     @GET("user/following/{user}")
     Call<Void> isFollowing(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @GET("/user/issues")
+    Call<List<GitHubIssues>> getIssues(@Header("Authorization") String credentials);
 
     @PUT("user/following/{user}")
     Call<Void> follow(@Header("Authorization") String credentials, @Path("user") String user);
