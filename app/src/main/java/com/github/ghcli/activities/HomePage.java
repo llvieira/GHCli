@@ -1,7 +1,9 @@
 package com.github.ghcli.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 
 public class HomePage extends AppCompatActivity implements ProfileFragment.OnFragmentInteractionListener, FollowersFragment.OnFragmentInteractionListener, ReposFragment.OnFragmentInteractionListener {
     private static final String SELECTED_ITEM = "arg_selected_item";
+    private static final String COLOR_ACTION_ITEM = "#444444";
+    private static final String COLO_BACKGROUND_LISTVIEW = "#111111";
     private static final String KEY_USER = "user";
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
@@ -38,7 +42,7 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
     private int mSelectedItem;
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Followers", "Logout"};
+    private String[] actions = {"Profile", "Repositories", "Followers", "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -156,11 +160,21 @@ public class HomePage extends AppCompatActivity implements ProfileFragment.OnFra
             ft.commit();
         }
 
-
-        Log.d("TESTE", "Deu certo");
         leftDrawer.setItemChecked(item, true);
+        setColor(item);
         drawerLayout.closeDrawer(leftDrawer);
         getSupportActionBar().setTitle(actions[item]);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void setColor(int position) {
+        for (int i = 0; i < leftDrawer.getChildCount(); i++) {
+            if (i == position) {
+                leftDrawer.getChildAt(i).setBackgroundColor(Color.parseColor(COLOR_ACTION_ITEM));
+            } else {
+                leftDrawer.getChildAt(i).setBackgroundColor(Color.parseColor(COLO_BACKGROUND_LISTVIEW));
+            }
+        }
     }
 
     public void logout() {
