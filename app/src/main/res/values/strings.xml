@@ -20,8 +20,15 @@
     <string name="wait_connecting">Wait while connecting...</string>
 
     <!--Messages Profile-->
+    <string name="repos_name_default">No Name</string>
+    <string name="repos_text_private">Private</string>
+    <string name="repos_description_default">No Description</string>
+    <string name="repos_language_default">No Language</string>
+    <string name="repos_date_default">No Date</string>
+
+    <!--Messages Profile-->
     <string name="profile_text">Profile</string>
-    <string name="nome_default_user">Unnamed</string>
+    <string name="name_default_user">Unnamed</string>
     <string name="login_default_user">No Login</string>
     <string name="email_default_user">No Email</string>
     <string name="location_default_user">No Location</string>
@@ -34,8 +41,6 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
-    <string name="repos_text">WELCOME TO YOUR REPOSITORIES</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

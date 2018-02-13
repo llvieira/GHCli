@@ -67,7 +67,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/montserrat"
-                android:text="@string/nome_default_user"
+                android:text="@string/name_default_user"
                 android:textAlignment="center"
                 android:textColor="@android:color/background_dark"
                 android:textSize="24sp"
