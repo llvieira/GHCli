@@ -1,8 +1,5 @@
 package com.github.ghcli.models;
 
-/**
- * Created by pedro on 13/02/18.
- */
 
 public class GitRepository {
 
