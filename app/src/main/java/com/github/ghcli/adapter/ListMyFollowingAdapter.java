@@ -3,7 +3,6 @@ package com.github.ghcli.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,6 @@ public class ListMyFollowingAdapter extends RecyclerView.Adapter<ListMyFollowing
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i("LOG", "onCreateViewHolder");
         View v = mLayoutInflater.inflate(R.layout.item_following_card, parent, false);
 
         MyViewHolder myViewHolder = new MyViewHolder(v);
@@ -53,7 +51,6 @@ public class ListMyFollowingAdapter extends RecyclerView.Adapter<ListMyFollowing
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Log.i("LOG", "onBindViewHolder");
 
         final GitHubUser item = mList.get(position);
 

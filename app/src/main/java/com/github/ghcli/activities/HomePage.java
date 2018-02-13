@@ -45,7 +45,7 @@ public class HomePage extends AppCompatActivity implements
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Followers", "Issues", "My Followings",  "Sign out"};
+    private String[] actions = {"Profile", "Repositories", "Followers", "Issues", "Following",  "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
