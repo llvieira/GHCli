@@ -1,5 +1,6 @@
 package com.github.ghcli.service.clients;
 
+import com.github.ghcli.models.GitEvent;
 import com.github.ghcli.models.GitHubIssues;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
@@ -42,4 +43,7 @@ public interface IGitHubUser {
 
     @DELETE("user/following/{user}")
     Call<Void> unfollow(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @GET("users/{user}/events")
+    Call<List<GitEvent>> getEventFollowing(@Header("Authorization") String credentials, @Path("user") String user);
 }
