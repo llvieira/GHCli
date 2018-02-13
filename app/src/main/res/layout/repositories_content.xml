@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingLeft="5dp"
-                    android:text="No name"
+                    android:text="@string/repos_name_default"
                     android:textAlignment="viewStart"
                     android:textColor="@android:color/holo_blue_light"
                     android:textSize="20sp"
@@ -57,7 +57,7 @@
                         android:id="@+id/repositoryPrivate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Private"
+                        android:text="@string/repos_text_private"
                         android:textAlignment="center"
                         android:textAllCaps="false"
                         android:textColor="@android:color/background_dark"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp"
-                android:text="@string/bio_default_user"
+                android:text="@string/repos_description_default"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="18sp" />
@@ -89,7 +89,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_description_black_24dp"
-                    android:text="No language"
+                    android:text="@string/repos_language_default"
                     android:textAlignment="textStart"
                     android:textSize="14sp" />
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="No date" />
+                    android:text="@string/repos_date_default" />
 
             </LinearLayout>
         </LinearLayout>
