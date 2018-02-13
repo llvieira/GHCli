@@ -32,7 +32,7 @@ public class ListIssuesAdapter extends RecyclerView.Adapter<IssuesViewHolder> {
     public void onBindViewHolder(IssuesViewHolder holder, int position) {
         GitHubIssues gitHubIssues = issues.get(position);
         holder.setIssueNumber(gitHubIssues.getNumber());
-        holder.setIssueState(gitHubIssues.getState());
+        holder.setIssueStatus(gitHubIssues.getStatus());
         holder.setIssueTitle(gitHubIssues.getTitle());
         holder.setIssueBody(gitHubIssues.getBody());
     }

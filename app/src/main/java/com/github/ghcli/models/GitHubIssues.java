@@ -3,13 +3,16 @@ package com.github.ghcli.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GitHubIssues implements Parcelable {
 
     private String number;
-    private String state;
+    @SerializedName("state")
+    private String status;
     private String title;
     private String body;
     private List<IssueLabels> labels;
@@ -17,9 +20,9 @@ public class GitHubIssues implements Parcelable {
     public GitHubIssues() {
     }
 
-    public GitHubIssues(String number, String state, String title, String body, List<IssueLabels> labels) {
+    public GitHubIssues(String number, String status, String title, String body, List<IssueLabels> labels) {
         this.number = number;
-        this.state = state;
+        this.status = status;
         this.title = title;
         this.body = body;
         this.labels = labels;
@@ -27,7 +30,7 @@ public class GitHubIssues implements Parcelable {
 
     protected GitHubIssues(Parcel in) {
         number = in.readString();
-        state = in.readString();
+        status = in.readString();
         title = in.readString();
         body = in.readString();
         labels = new ArrayList<IssueLabels>();
@@ -54,12 +57,12 @@ public class GitHubIssues implements Parcelable {
         this.number = number;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getTitle() {
@@ -90,7 +93,7 @@ public class GitHubIssues implements Parcelable {
     public String toString() {
         return "GitHubIssues{" +
                 "number='" + number + '\'' +
-                ", state='" + state + '\'' +
+                ", status='" + status + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", labels='" + labels + '\'' +
@@ -105,7 +108,7 @@ public class GitHubIssues implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(number);
-        parcel.writeString(state);
+        parcel.writeString(status);
         parcel.writeString(title);
         parcel.writeString(body);
         parcel.writeList(labels);
@@ -119,7 +122,7 @@ public class GitHubIssues implements Parcelable {
         GitHubIssues that = (GitHubIssues) o;
 
         if (number != null ? !number.equals(that.number) : that.number != null) return false;
-        if (state != null ? !state.equals(that.state) : that.state != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (body != null ? !body.equals(that.body) : that.body != null) return false;
         return labels != null ? labels.equals(that.labels) : that.labels == null;
@@ -128,7 +131,7 @@ public class GitHubIssues implements Parcelable {
     @Override
     public int hashCode() {
         int result = number != null ? number.hashCode() : 0;
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + (labels != null ? labels.hashCode() : 0);

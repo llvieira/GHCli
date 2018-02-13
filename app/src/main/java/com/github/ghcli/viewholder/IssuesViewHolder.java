@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 public class IssuesViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.issue_number) TextView issueNumber;
-    @BindView(R.id.issue_state) TextView issueState;
+    @BindView(R.id.issue_status) TextView issueStatus;
     @BindView(R.id.issue_title) TextView issueTitle;
     @BindView(R.id.issue_body) TextView issueBody;
 
@@ -33,16 +33,16 @@ public class IssuesViewHolder extends RecyclerView.ViewHolder {
         this.issueNumber.setText(issueNumber);
     }
 
-    public void setIssueState(String issueState) {
-        if (issueState != null && issueState.equals("closed")) {
-            this.issueState.setTextColor(Color.RED);
+    public void setIssueStatus(String issueStatus) {
+        if (issueStatus != null && issueStatus.equals("closed")) {
+            this.issueStatus.setTextColor(Color.RED);
         } else {
-            this.issueState.setTextColor(Color.BLUE);
+            this.issueStatus.setTextColor(Color.BLUE);
         }
 
-        String newStr = issueState.substring(0, 1).toUpperCase() + issueState.substring(1);
+        String newStr = issueStatus.substring(0, 1).toUpperCase() + issueStatus.substring(1);
 
-        this.issueState.setText(newStr);
+        this.issueStatus.setText(newStr);
     }
 
     public TextView getIssueTitle() {

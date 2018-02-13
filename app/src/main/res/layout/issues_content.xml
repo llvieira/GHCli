@@ -50,12 +50,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="State: "
+                android:text="Status: "
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/issue_state"
+                android:id="@+id/issue_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Issue State"
