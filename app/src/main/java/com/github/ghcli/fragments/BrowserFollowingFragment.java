@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListBrowserFollowingAdapter;
 import com.github.ghcli.adapter.ListFollowersAdapter;
+import com.github.ghcli.adapter.ListMyFollowingAdapter;
 import com.github.ghcli.models.GitEvent;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
@@ -36,7 +38,7 @@ public class BrowserFollowingFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.followers_recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.rvListBrowserFollowing) RecyclerView recyclerView;
 
     private String mParam1;
     private String mParam2;
@@ -61,19 +63,48 @@ public class BrowserFollowingFragment extends Fragment {
 
     private GitEvent getOneEvent(String user) {
         Call<List<GitEvent>> callEventsFollowing = iGitHubUser.getEventFollowing(Authentication.getToken(context), user);
+        List<GitEvent> gitEvents = new ArrayList<>();
         try {
-            return callEventsFollowing.execute().body().get(0);
+            gitEvents = callEventsFollowing.execute().body();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
+        if(gitEvents.isEmpty()){
+            return null;
+        }else{
+            return gitEvents.get(0);
+        }
     }
 
     private void getEventsFollowing(){
         List<GitEvent> gitEvents = new ArrayList<>();
+        List<GitHubUser> gitHubUsers = new ArrayList<>();
 
-        Call<GitHubUser> gitHubUserCall = iGitHubUser.
+        Call<List<GitHubUser>> gitHubUserCall = iGitHubUser.getFollowing(Authentication.getToken(context));
+
+        try {
+            gitHubUsers = gitHubUserCall.execute().body();
+
+            for(GitHubUser gitHubUser : gitHubUsers){
+                GitEvent gitEvent =getOneEvent(gitHubUser.getLogin());
+                if(gitEvent != null){
+                    gitEvent.getActor().setName(gitHubUser.getLogin());
+                    gitEvents.add(gitEvent);
+                }
+            }
+
+            recyclerView.setAdapter(new ListBrowserFollowingAdapter(context, gitEvents,iGitHubUser));
+            RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false);
+            recyclerView.setLayoutManager(layout);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -92,20 +123,10 @@ public class BrowserFollowingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_browser_following, container, false);
         ButterKnife.bind(this, view);
         this.context = getActivity().getApplicationContext();
-        getBrowserFollowing();
+        getEventsFollowing();
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {
