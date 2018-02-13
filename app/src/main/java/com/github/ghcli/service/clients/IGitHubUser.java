@@ -30,6 +30,12 @@ public interface IGitHubUser {
     @GET("user/followers")
     Call<List<GitHubUser>> getFollowers(@Header("Authorization") String credentials);
 
+    @GET("user/following")
+    Call<List<GitHubUser>> getFollowing(@Header("Authorization") String credentials);
+
+    @GET("users/{user}")
+    Call<GitHubUser> getOneUser(@Header("Authorization") String credentials, @Path("user") String user);
+
     @GET("user/following/{user}")
     Call<Void> isFollowing(@Header("Authorization") String credentials, @Path("user") String user);
 
