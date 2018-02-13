@@ -54,7 +54,7 @@
                             />
                         <ToggleButton
                             android:textOff="Follow"
-                            android:textOn="UnFollow"
+                            android:textOn="Unfollow"
                             android:layout_gravity="bottom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
