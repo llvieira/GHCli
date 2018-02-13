@@ -4,29 +4,35 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListRepositoriesAdapter;
+import com.github.ghcli.models.GitHubRepository;
+import com.github.ghcli.models.GitHubUser;
+import com.github.ghcli.service.ServiceGenerator;
+import com.github.ghcli.service.clients.IGitHubUser;
+import com.github.ghcli.util.Authentication;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ReposFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ReposFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ReposFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.repositoryProgressBar) ProgressBar repositoryProgressBar;
+    @BindView(R.id.repositoryRecyclerView) RecyclerView repositoryRecyclerView;
 
     public ReposFragment() {
         // Required empty public constructor
@@ -43,8 +49,6 @@ public class ReposFragment extends Fragment {
     public static ReposFragment newInstance(String param1, String param2) {
         ReposFragment fragment = new ReposFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,8 +57,6 @@ public class ReposFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -62,6 +64,11 @@ public class ReposFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_repos, container, false);
+        ButterKnife.bind(this, view);
+
+        final IGitHubUser gitHubUserClient = ServiceGenerator.createService(IGitHubUser.class);
+        loadUserRepositories(gitHubUserClient);
+
         return view;
     }
 
@@ -88,17 +95,32 @@ public class ReposFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void loadUserRepositories(IGitHubUser gitHubUserClient) {
+        Call<List<GitHubRepository>> callRepos = gitHubUserClient.getUserRepos(Authentication.getToken(getActivity().getApplicationContext()));
+        repositoryProgressBar.setVisibility(View.VISIBLE);
+        callRepos.enqueue(new Callback<List<GitHubRepository>>() {
+            @Override
+            public void onResponse(Call<List<GitHubRepository>> call, Response<List<GitHubRepository>> response) {
+                if(response.isSuccessful()) {
+                    repositoryProgressBar.setVisibility(View.INVISIBLE);
+                    List<GitHubRepository> repositories = response.body();
+                    repositoryRecyclerView.setAdapter(new ListRepositoriesAdapter(repositories));
+                    RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                            getActivity().getApplicationContext(),
+                            LinearLayoutManager.VERTICAL,
+                            false);
+                    repositoryRecyclerView.setLayoutManager(layout);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GitHubRepository>> call, Throwable t) {
+
+            }
+        });
     }
 }

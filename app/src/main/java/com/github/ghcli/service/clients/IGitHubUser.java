@@ -1,6 +1,7 @@
 package com.github.ghcli.service.clients;
 
 import com.github.ghcli.models.GitHubOrganization;
+import com.github.ghcli.models.GitHubRepository;
 import com.github.ghcli.models.GitHubUser;
 
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ public interface IGitHubUser {
 
     @GET("user/orgs")
     Call<ArrayList<GitHubOrganization>> getUserOrgs(@Header("Authorization") String credentials);
+
+    @GET("user/repos")
+    Call<List<GitHubRepository>> getUserRepos(@Header("Authorization") String credentials);
 
     @GET("user/followers")
     Call<List<GitHubUser>> getFollowers(@Header("Authorization") String credentials);
