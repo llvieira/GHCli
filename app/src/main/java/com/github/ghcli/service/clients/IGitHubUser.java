@@ -1,5 +1,6 @@
 package com.github.ghcli.service.clients;
 
+import com.github.ghcli.models.GitHubIssues;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 
@@ -12,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Interface to get the GitHub User.
@@ -29,6 +31,11 @@ public interface IGitHubUser {
 
     @GET("user/following/{user}")
     Call<Void> isFollowing(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @GET("/user/issues")
+    Call<List<GitHubIssues>> getIssues(@Header("Authorization") String credentials,
+                                       @Query("state") String state,
+                                       @Query("filter") String filter);
 
     @PUT("user/following/{user}")
     Call<Void> follow(@Header("Authorization") String credentials, @Path("user") String user);
