@@ -24,10 +24,13 @@ public class GitHubRepository {
     @SerializedName("private")
     private boolean isPrivate;
 
+    @SerializedName("stargazers_count")
+    private int stargazersCount;
+
     public GitHubRepository() {
     }
 
-    public GitHubRepository(String name, String fullName, String description, String language, Date updatedAt, boolean isFork, boolean isPrivate) {
+    public GitHubRepository(String name, String fullName, String description, String language, Date updatedAt, boolean isFork, boolean isPrivate, int stargazersCount) {
         this.name = name;
         this.fullName = fullName;
         this.description = description;
@@ -35,6 +38,7 @@ public class GitHubRepository {
         this.updatedAt = updatedAt;
         this.isFork = isFork;
         this.isPrivate = isPrivate;
+        this.stargazersCount = stargazersCount;
     }
 
     public String getName() {
@@ -65,6 +69,10 @@ public class GitHubRepository {
         return isPrivate;
     }
 
+    public int getStargazersCount() {
+        return stargazersCount;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -91,5 +99,9 @@ public class GitHubRepository {
 
     public void setPrivate(boolean aPrivate) {
         isPrivate = aPrivate;
+    }
+
+    public void setStargazersCount(int stargazersCount) {
+        this.stargazersCount = stargazersCount;
     }
 }

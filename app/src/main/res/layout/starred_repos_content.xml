@@ -81,7 +81,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/starredRepos"
+                    android:id="@+id/starredReposStarNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -90,7 +90,7 @@
                     android:textAlignment="textStart" />
 
                 <TextView
-                    android:id="@+id/repositoryLatsUpdate"
+                    android:id="@+id/starredReposLastUpdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
