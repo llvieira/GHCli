@@ -26,6 +26,7 @@ import com.github.ghcli.fragments.IssuesFragment;
 import com.github.ghcli.fragments.MyFollowingFragment;
 import com.github.ghcli.fragments.ProfileFragment;
 import com.github.ghcli.fragments.ReposFragment;
+import com.github.ghcli.fragments.StarredReposFragment;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.util.Authentication;
@@ -36,6 +37,7 @@ public class HomePage extends AppCompatActivity implements
         ProfileFragment.OnFragmentInteractionListener,
         FollowersFragment.OnFragmentInteractionListener,
         ReposFragment.OnFragmentInteractionListener,
+        StarredReposFragment.OnFragmentInteractionListener,
         IssuesFragment.OnFragmentInteractionListener {
 
     private static final String SELECTED_ITEM = "arg_selected_item";
@@ -45,7 +47,7 @@ public class HomePage extends AppCompatActivity implements
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Followers", "Issues", "Following",  "Sign out"};
+    private String[] actions = {"Profile", "Repositories", "Star", "Followers", "Issues", "Following",  "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -142,15 +144,18 @@ public class HomePage extends AppCompatActivity implements
                 frag = ReposFragment.newInstance("teste1","teste2");
                 break;
             case 2:
-                frag = FollowersFragment.newInstance("teste1", "teste2");
+                frag = StarredReposFragment.newInstance("teste1", "teste2");
                 break;
             case 3:
-                frag = IssuesFragment.newInstance("teste1","teste2");
+                frag = FollowersFragment.newInstance("teste1", "teste2");
                 break;
             case 4:
-                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                frag = IssuesFragment.newInstance("teste1","teste2");
                 break;
             case 5:
+                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                break;
+            case 6:
                 logout();
                 break;
         }
