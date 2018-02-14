@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GitHubIssues implements Parcelable {
 
@@ -16,16 +18,19 @@ public class GitHubIssues implements Parcelable {
     private String title;
     private String body;
     private List<IssueLabels> labels;
+    @SerializedName("pull_request")
+    private Map<String, String> pullRequest;
 
     public GitHubIssues() {
     }
 
-    public GitHubIssues(String number, String status, String title, String body, List<IssueLabels> labels) {
+    public GitHubIssues(String number, String status, String title, String body, List<IssueLabels> labels, Map<String, String> pullRequest) {
         this.number = number;
         this.status = status;
         this.title = title;
         this.body = body;
         this.labels = labels;
+        this.pullRequest = pullRequest;
     }
 
     protected GitHubIssues(Parcel in) {
@@ -35,6 +40,8 @@ public class GitHubIssues implements Parcelable {
         body = in.readString();
         labels = new ArrayList<IssueLabels>();
         in.readList(new ArrayList<IssueLabels>(), IssueLabels.class.getClassLoader());
+        pullRequest = new HashMap<>();
+        in.readHashMap(pullRequest.getClass().getClassLoader());
     }
 
     public static final Creator<GitHubUser> CREATOR = new Creator<GitHubUser>() {
@@ -89,6 +96,14 @@ public class GitHubIssues implements Parcelable {
         this.labels = labels;
     }
 
+    public Map<String, String> getPullRequest() {
+        return pullRequest;
+    }
+
+    public void setPullRequest(Map<String, String> pullRequest) {
+        this.pullRequest = pullRequest;
+    }
+
     @Override
     public String toString() {
         return "GitHubIssues{" +
@@ -112,6 +127,7 @@ public class GitHubIssues implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(body);
         parcel.writeList(labels);
+        parcel.writeMap(pullRequest);
     }
 
     @Override
@@ -137,4 +153,5 @@ public class GitHubIssues implements Parcelable {
         result = 31 * result + (labels != null ? labels.hashCode() : 0);
         return result;
     }
+
 }

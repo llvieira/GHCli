@@ -25,6 +25,7 @@ import com.github.ghcli.fragments.FollowersFragment;
 import com.github.ghcli.fragments.IssuesFragment;
 import com.github.ghcli.fragments.MyFollowingFragment;
 import com.github.ghcli.fragments.ProfileFragment;
+import com.github.ghcli.fragments.PullRequesFragment;
 import com.github.ghcli.fragments.ReposFragment;
 import com.github.ghcli.fragments.StarredReposFragment;
 import com.github.ghcli.models.GitHubOrganization;
@@ -38,7 +39,8 @@ public class HomePage extends AppCompatActivity implements
         FollowersFragment.OnFragmentInteractionListener,
         ReposFragment.OnFragmentInteractionListener,
         StarredReposFragment.OnFragmentInteractionListener,
-        IssuesFragment.OnFragmentInteractionListener {
+        IssuesFragment.OnFragmentInteractionListener,
+        PullRequesFragment.OnFragmentInteractionListener {
 
     private static final String SELECTED_ITEM = "arg_selected_item";
     private static final String COLOR_ACTION_ITEM = "#444444";
@@ -47,7 +49,7 @@ public class HomePage extends AppCompatActivity implements
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Stars", "Followers", "Issues", "Following",  "Sign out"};
+    private String[] actions = {"Profile", "Repositories", "Stars", "Followers", "Issues", "Pull Requests", "Following",  "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -153,9 +155,12 @@ public class HomePage extends AppCompatActivity implements
                 frag = IssuesFragment.newInstance("teste1","teste2");
                 break;
             case 5:
-                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                frag = PullRequesFragment.newInstance("teste1", "teste2");
                 break;
             case 6:
+                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                break;
+            case 7:
                 logout();
                 break;
         }
