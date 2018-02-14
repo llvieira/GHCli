@@ -18,6 +18,7 @@ import com.github.ghcli.models.GitHubRepository;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
+import com.github.ghcli.util.Message;
 
 import java.util.List;
 
@@ -28,6 +29,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StarredReposFragment extends Fragment {
+
+    private static final String MESSAGE_LOAD_STARRED_REPOS_FAIL = "Unable to load user favorite repositories";
+    private static final String MESSAGE_LOAD_STARRED_REPOS_NO_RESPONSE = "There is no response from the server";
 
     private OnFragmentInteractionListener mListener;
 
@@ -107,12 +111,14 @@ public class StarredReposFragment extends Fragment {
                             LinearLayoutManager.VERTICAL,
                             false);
                     starredReposRecyclerView.setLayoutManager(layout);
+                } else {
+                    Message.showToast(MESSAGE_LOAD_STARRED_REPOS_FAIL, getActivity().getApplicationContext());
                 }
             }
 
             @Override
             public void onFailure(Call<List<GitHubRepository>> call, Throwable t) {
-
+                Message.showToast(MESSAGE_LOAD_STARRED_REPOS_NO_RESPONSE, getActivity().getApplicationContext());
             }
         });
     }

@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_star_black_24dp"
                     android:elevation="10dp"
-                    android:text="Unstar"
+                    android:text="@string/starred_repos_unstar_default"
                     android:textAlignment="textStart" />
 
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_star_black_24dp"
-                    android:text="0"
+                    android:text="@string/starred_repos_star_number_default"
                     android:textAlignment="textStart" />
 
                 <TextView

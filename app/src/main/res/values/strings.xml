@@ -19,7 +19,11 @@
     <string name="no_connection">No internet connection</string>
     <string name="wait_connecting">Wait while connecting...</string>
 
-    <!--Messages Profile-->
+    <!--Messages Starred Repositories-->
+    <string name="starred_repos_unstar_default">Unstar</string>
+    <string name="starred_repos_star_number_default">0</string>
+
+    <!--Messages Repositories-->
     <string name="repos_name_default">No Name</string>
     <string name="repos_text_private">Private</string>
     <string name="repos_description_default">No Description</string>
