@@ -23,15 +23,17 @@ public class ListPullRequestsAdapter extends RecyclerView.Adapter<PullResuestsVi
     @Override
     public PullResuestsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-
         View view = layoutInflater.inflate(R.layout.issues_content, parent, false);
-
         return new PullResuestsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(PullResuestsViewHolder holder, int position) {
-
+        GitHubPullRequest pullRequest = pullRequests.get(position);
+        holder.setPullRequestNumber(pullRequest.getNumber());
+        holder.setPullRequestStatus(pullRequest.getStatus());
+        holder.setPullRequestTitle(pullRequest.getTitle());
+        holder.setPullRequestBody(pullRequest.getBody());
     }
 
     @Override

@@ -52,7 +52,10 @@ public interface IGitHubUser {
                                        @Query("filter") String filter);
 
     @GET("/repos/{owner}/{repo}/pulls/{number}")
-    Call<GitHubPullRequest> getPullResquet(@Path("owner") String owner, @Path("repo") String repo, @Path("number") String number);
+    Call<GitHubPullRequest> getPullResquet(@Header("Authorization") String credentials,
+                                           @Path("owner") String owner,
+                                           @Path("repo") String repo,
+                                           @Path("number") String number);
 
     @PUT("user/following/{user}")
     Call<Void> follow(@Header("Authorization") String credentials, @Path("user") String user);
