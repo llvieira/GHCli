@@ -1,16 +1,11 @@
 package com.github.ghcli.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GitHubIssues implements Parcelable {
+public class GitHubIssues {
 
     private String number;
     @SerializedName("state")
@@ -20,41 +15,31 @@ public class GitHubIssues implements Parcelable {
     private List<IssueLabels> labels;
     @SerializedName("pull_request")
     private Map<String, String> pullRequest;
+    private GitHubRepository repository;
 
     public GitHubIssues() {
     }
 
-    public GitHubIssues(String number, String status, String title, String body, List<IssueLabels> labels, Map<String, String> pullRequest) {
+    public GitHubIssues(String number, String status, String title, String body,
+                        List<IssueLabels> labels) {
+        this.number = number;
+        this.status = status;
+        this.title = title;
+        this.body = body;
+        this.labels = labels;
+    }
+
+    public GitHubIssues(String number, String status, String title, String body,
+                        List<IssueLabels> labels, Map<String, String> pullRequest,
+                        GitHubRepository repository) {
         this.number = number;
         this.status = status;
         this.title = title;
         this.body = body;
         this.labels = labels;
         this.pullRequest = pullRequest;
+        this.repository = repository;
     }
-
-    protected GitHubIssues(Parcel in) {
-        number = in.readString();
-        status = in.readString();
-        title = in.readString();
-        body = in.readString();
-        labels = new ArrayList<IssueLabels>();
-        in.readList(new ArrayList<IssueLabels>(), IssueLabels.class.getClassLoader());
-        pullRequest = new HashMap<>();
-        in.readHashMap(pullRequest.getClass().getClassLoader());
-    }
-
-    public static final Creator<GitHubUser> CREATOR = new Creator<GitHubUser>() {
-        @Override
-        public GitHubUser createFromParcel(Parcel in) {
-            return new GitHubUser(in);
-        }
-
-        @Override
-        public GitHubUser[] newArray(int size) {
-            return new GitHubUser[size];
-        }
-    };
 
     public String getNumber() {
         return number;
@@ -89,7 +74,7 @@ public class GitHubIssues implements Parcelable {
     }
 
     public List<IssueLabels> getLabels() {
-        return labels;
+        return this.labels;
     }
 
     public void setLabels(List<IssueLabels> labels) {
@@ -104,6 +89,14 @@ public class GitHubIssues implements Parcelable {
         this.pullRequest = pullRequest;
     }
 
+    public GitHubRepository getRepository() {
+        return repository;
+    }
+
+    public void setRepository(GitHubRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public String toString() {
         return "GitHubIssues{" +
@@ -111,23 +104,9 @@ public class GitHubIssues implements Parcelable {
                 ", status='" + status + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
-                ", labels='" + labels + '\'' +
+                ", labels=" + labels +
+                ", repository=" + repository +
                 '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return this.hashCode();
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(number);
-        parcel.writeString(status);
-        parcel.writeString(title);
-        parcel.writeString(body);
-        parcel.writeList(labels);
-        parcel.writeMap(pullRequest);
     }
 
     @Override
@@ -141,7 +120,8 @@ public class GitHubIssues implements Parcelable {
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (body != null ? !body.equals(that.body) : that.body != null) return false;
-        return labels != null ? labels.equals(that.labels) : that.labels == null;
+        if (labels != null ? !labels.equals(that.labels) : that.labels != null) return false;
+        return repository != null ? repository.equals(that.repository) : that.repository == null;
     }
 
     @Override
@@ -151,7 +131,7 @@ public class GitHubIssues implements Parcelable {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + (labels != null ? labels.hashCode() : 0);
+        result = 31 * result + (repository != null ? repository.hashCode() : 0);
         return result;
     }
-
 }

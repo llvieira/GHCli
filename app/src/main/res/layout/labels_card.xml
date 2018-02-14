@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/issues"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="2dp">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/labels_card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="6dp"
+        card_view:cardBackgroundColor="@color/cardview_dark_background"
+        card_view:cardElevation="2dp">
+
+        <TextView
+            android:id="@+id/labels_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Labels"
+            android:textColor="@color/cardview_light_background"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:shadowColor="@color/cardview_dark_background"/>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
