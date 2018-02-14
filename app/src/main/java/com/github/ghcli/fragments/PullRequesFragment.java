@@ -17,11 +17,14 @@ import android.widget.ProgressBar;
 import com.github.ghcli.R;
 import com.github.ghcli.adapter.ListIssuesAdapter;
 import com.github.ghcli.models.GitHubIssues;
+import com.github.ghcli.models.IssueLabels;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +48,7 @@ public class PullRequesFragment extends Fragment{
     private IGitHubUser iGitHubUser;
     private Context context;
     private PullRequesFragment.OnFragmentInteractionListener mListener;
+    private int processingGetPullRequest = 0;
 
     public PullRequesFragment() {
     }
@@ -62,7 +66,7 @@ public class PullRequesFragment extends Fragment{
 
     private void getIssues() {
         Call<List<GitHubIssues>> getIssues = iGitHubUser.getIssues(
-                Authentication.getToken(context), "all", "subscribed");
+                Authentication.getToken(context), "all", "all");
         progressBar.setVisibility(View.VISIBLE);
         getIssues.enqueue(new Callback<List<GitHubIssues>>() {
             @Override
@@ -86,6 +90,21 @@ public class PullRequesFragment extends Fragment{
                 Log.e("ERROR", t.getMessage());
             }
         });
+    }
+
+    private void getPullRequests(List<GitHubIssues> issues) {
+        for (int i = 0; i < issues.size(); i++) {
+            Map<String, String> pullRequest = issues.get(i).getPullRequest();
+
+            if (pullRequest != null) {
+                processingGetPullRequest += 1;
+                getPullRequest(pullRequest.get("url"));
+            }
+        }
+    }
+
+    private void getPullRequest(String uri) {
+
     }
 
     @Override

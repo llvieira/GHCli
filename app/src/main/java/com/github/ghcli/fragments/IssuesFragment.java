@@ -72,7 +72,6 @@ public class IssuesFragment extends Fragment {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.INVISIBLE);
                     List<GitHubIssues> issues = response.body();
-                    Log.d("WARN", issues.get(0).getPullRequest().toString());
 
                     recyclerView.setAdapter(new ListIssuesAdapter(issues));
                     RecyclerView.LayoutManager layout = new LinearLayoutManager(
