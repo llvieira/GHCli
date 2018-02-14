@@ -21,6 +21,15 @@ public class GitHubIssues {
     }
 
     public GitHubIssues(String number, String status, String title, String body,
+                        List<IssueLabels> labels) {
+        this.number = number;
+        this.status = status;
+        this.title = title;
+        this.body = body;
+        this.labels = labels;
+    }
+
+    public GitHubIssues(String number, String status, String title, String body,
                         List<IssueLabels> labels, Map<String, String> pullRequest,
                         GitHubRepository repository) {
         this.number = number;

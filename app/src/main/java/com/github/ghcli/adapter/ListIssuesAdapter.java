@@ -36,7 +36,7 @@ public class ListIssuesAdapter extends RecyclerView.Adapter<IssuesViewHolder> {
         holder.setIssueStatus(gitHubIssues.getStatus());
         holder.setIssueTitle(gitHubIssues.getTitle());
         holder.setIssueBody(gitHubIssues.getBody());
-        holder.setLabelRecyclerView(issues.get(position).getLabels());
+        holder.setLabelRecyclerView(gitHubIssues.getLabels());
     }
 
     @Override
