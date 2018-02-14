@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 
 public class IssuesViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.owner_repo_issue) TextView ownerRepo;
     @BindView(R.id.issue_number) TextView issueNumber;
     @BindView(R.id.issue_status) TextView issueStatus;
     @BindView(R.id.issue_title) TextView issueTitle;
@@ -30,6 +31,14 @@ public class IssuesViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         ButterKnife.bind(this, itemView);
         this.view = itemView;
+    }
+
+    public TextView getOwnerRepo() {
+        return ownerRepo;
+    }
+
+    public void setOwnerRepo(String ownerRepo) {
+        this.ownerRepo.setText(ownerRepo);
     }
 
     public TextView getIssueNumber() {

@@ -31,6 +31,7 @@ public class ListIssuesAdapter extends RecyclerView.Adapter<IssuesViewHolder> {
     @Override
     public void onBindViewHolder(IssuesViewHolder holder, int position) {
         GitHubIssues gitHubIssues = issues.get(position);
+        holder.setOwnerRepo(gitHubIssues.getRepository().getFullName());
         holder.setIssueNumber(gitHubIssues.getNumber());
         holder.setIssueStatus(gitHubIssues.getStatus());
         holder.setIssueTitle(gitHubIssues.getTitle());
