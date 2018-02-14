@@ -1,10 +1,11 @@
 package com.github.ghcli.fragments;
 
+
+import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,15 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
-import com.github.ghcli.adapter.ListFollowersAdapter;
 import com.github.ghcli.adapter.ListIssuesAdapter;
 import com.github.ghcli.models.GitHubIssues;
-import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IssuesFragment extends Fragment {
+public class PullRequesFragment extends Fragment{
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -45,13 +44,13 @@ public class IssuesFragment extends Fragment {
 
     private IGitHubUser iGitHubUser;
     private Context context;
-    private OnFragmentInteractionListener mListener;
+    private PullRequesFragment.OnFragmentInteractionListener mListener;
 
-    public IssuesFragment() {
+    public PullRequesFragment() {
     }
 
-    public static IssuesFragment newInstance(String param1, String param2) {
-        IssuesFragment fragment = new IssuesFragment();
+    public static PullRequesFragment newInstance(String param1, String param2) {
+        PullRequesFragment fragment = new PullRequesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,7 +71,6 @@ public class IssuesFragment extends Fragment {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.INVISIBLE);
                     List<GitHubIssues> issues = response.body();
-                    Log.d("WARN", issues.get(0).getPullRequest().toString());
 
                     recyclerView.setAdapter(new ListIssuesAdapter(issues));
                     RecyclerView.LayoutManager layout = new LinearLayoutManager(
@@ -119,8 +117,8 @@ public class IssuesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof PullRequesFragment.OnFragmentInteractionListener) {
+            mListener = (PullRequesFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
