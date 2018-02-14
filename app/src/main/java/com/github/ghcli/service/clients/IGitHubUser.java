@@ -2,6 +2,7 @@ package com.github.ghcli.service.clients;
 
 import com.github.ghcli.models.GitHubIssues;
 import com.github.ghcli.models.GitHubOrganization;
+import com.github.ghcli.models.GitHubPullRequest;
 import com.github.ghcli.models.GitHubRepository;
 import com.github.ghcli.models.GitHubUser;
 
@@ -49,6 +50,9 @@ public interface IGitHubUser {
     Call<List<GitHubIssues>> getIssues(@Header("Authorization") String credentials,
                                        @Query("state") String state,
                                        @Query("filter") String filter);
+
+    @GET("/repos/{owner}/{repo}/pulls/{number}")
+    Call<GitHubPullRequest> getPullResquet(@Path("owner") String owner, @Path("repo") String repo, @Path("number") String number);
 
     @PUT("user/following/{user}")
     Call<Void> follow(@Header("Authorization") String credentials, @Path("user") String user);

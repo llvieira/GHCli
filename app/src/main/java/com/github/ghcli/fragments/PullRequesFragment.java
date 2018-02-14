@@ -17,11 +17,13 @@ import android.widget.ProgressBar;
 import com.github.ghcli.R;
 import com.github.ghcli.adapter.ListIssuesAdapter;
 import com.github.ghcli.models.GitHubIssues;
+import com.github.ghcli.models.GitHubPullRequest;
 import com.github.ghcli.models.IssueLabels;
 import com.github.ghcli.service.ServiceGenerator;
 import com.github.ghcli.service.clients.IGitHubUser;
 import com.github.ghcli.util.Authentication;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -49,6 +51,7 @@ public class PullRequesFragment extends Fragment{
     private Context context;
     private PullRequesFragment.OnFragmentInteractionListener mListener;
     private int processingGetPullRequest = 0;
+    private List<GitHubPullRequest> pullRequests = new ArrayList<>();
 
     public PullRequesFragment() {
     }
@@ -104,7 +107,33 @@ public class PullRequesFragment extends Fragment{
     }
 
     private void getPullRequest(String uri) {
+        String[] params = uri.split("/");
 
+        String owner = params[4];
+        String repo = params[5];
+        String number = params[7];
+
+        final Call<GitHubPullRequest> pullRequestCall = iGitHubUser.getPullResquet(owner, repo, number);
+
+        pullRequestCall.enqueue(new Callback<GitHubPullRequest>() {
+            @Override
+            public void onResponse(@NonNull Call<GitHubPullRequest> call,
+                                   @NonNull Response<GitHubPullRequest> response) {
+                if (response.isSuccessful()) {
+                    pullRequests.add(response.body());
+                    processingGetPullRequest -= 1;
+
+                    if (processingGetPullRequest == 0) {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GitHubPullRequest> call, Throwable t) {
+                Log.e("ERROR", t.getMessage());
+            }
+        });
     }
 
     @Override
