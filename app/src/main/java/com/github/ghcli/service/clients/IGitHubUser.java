@@ -30,6 +30,9 @@ public interface IGitHubUser {
     @GET("user/repos")
     Call<List<GitHubRepository>> getUserRepos(@Header("Authorization") String credentials);
 
+    @GET("user/starred")
+    Call<List<GitHubRepository>> getUserStarredRepos(@Header("Authorization") String credentials);
+
     @GET("user/followers")
     Call<List<GitHubUser>> getFollowers(@Header("Authorization") String credentials);
 
@@ -52,4 +55,7 @@ public interface IGitHubUser {
 
     @DELETE("user/following/{user}")
     Call<Void> unfollow(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @DELETE("user/starred/{ownerRepo}/{nameRepo}")
+    Call<Void> unstar(@Header("Authorization") String credentials, @Path("ownerRepo") String ownerRepo, @Path("nameRepo") String nameRepo);
 }
