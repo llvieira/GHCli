@@ -30,6 +30,9 @@ public interface IGitHubUser {
     @GET("user/repos")
     Call<List<GitHubRepository>> getUserRepos(@Header("Authorization") String credentials);
 
+    @GET("user/starred")
+    Call<List<GitHubRepository>> getUserStarredRepos(@Header("Authorization") String credentials);
+
     @GET("user/followers")
     Call<List<GitHubUser>> getFollowers(@Header("Authorization") String credentials);
 
