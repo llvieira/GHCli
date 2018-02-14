@@ -42,7 +42,7 @@ public class IssueLabels implements Parcelable {
     }
 
     public String getColor() {
-        return color;
+        return "#" + color;
     }
 
     public void setColor(String color) {

@@ -38,7 +38,7 @@ public class GitHubIssues implements Parcelable {
         status = in.readString();
         title = in.readString();
         body = in.readString();
-        labels = new ArrayList<IssueLabels>();
+        labels = new ArrayList<>();
         in.readList(new ArrayList<IssueLabels>(), IssueLabels.class.getClassLoader());
         pullRequest = new HashMap<>();
         in.readHashMap(pullRequest.getClass().getClassLoader());
@@ -89,7 +89,7 @@ public class GitHubIssues implements Parcelable {
     }
 
     public List<IssueLabels> getLabels() {
-        return labels;
+        return this.labels;
     }
 
     public void setLabels(List<IssueLabels> labels) {
