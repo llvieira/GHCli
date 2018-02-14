@@ -55,4 +55,7 @@ public interface IGitHubUser {
 
     @DELETE("user/following/{user}")
     Call<Void> unfollow(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @DELETE("user/starred/{ownerRepo}/{nameRepo}")
+    Call<Void> unstar(@Header("Authorization") String credentials, @Path("ownerRepo") String ownerRepo, @Path("nameRepo") String nameRepo);
 }

@@ -8,6 +8,8 @@ public class GitHubRepository {
 
     private String name;
 
+    private GitHubUser owner;
+
     @SerializedName("full_name")
     private String fullName;
 
@@ -30,8 +32,9 @@ public class GitHubRepository {
     public GitHubRepository() {
     }
 
-    public GitHubRepository(String name, String fullName, String description, String language, Date updatedAt, boolean isFork, boolean isPrivate, int stargazersCount) {
+    public GitHubRepository(String name, GitHubUser owner, String fullName, String description, String language, Date updatedAt, boolean isFork, boolean isPrivate, int stargazersCount) {
         this.name = name;
+        this.owner = owner;
         this.fullName = fullName;
         this.description = description;
         this.language = language;
@@ -43,6 +46,10 @@ public class GitHubRepository {
 
     public String getName() {
         return name;
+    }
+
+    public GitHubUser getOwner() {
+        return owner;
     }
 
     public String getFullName() {
@@ -75,6 +82,10 @@ public class GitHubRepository {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setOwner(GitHubUser owner) {
+        this.owner = owner;
     }
 
     public void setFullName(String fullName) {

@@ -35,6 +35,10 @@ public class StarredReposViewHolder extends RecyclerView.ViewHolder {
         this.starredReposName.setText(name);
     }
 
+    public Button getStarredReposUnstar() {
+        return starredReposUnstar;
+    }
+
     public TextView getStarredReposDescription() {
         return starredReposDescription;
     }
@@ -56,7 +60,7 @@ public class StarredReposViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setStarredReposStarNumber(int numberStar) {
-        this.starredReposLanguage.setText(String.valueOf(numberStar));
+        this.starredReposStarNumber.setText(String.valueOf(numberStar));
     }
 
     public TextView getStarredReposLastUpdate() {
