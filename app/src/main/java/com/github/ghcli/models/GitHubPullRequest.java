@@ -4,23 +4,23 @@ import java.util.List;
 
 public class GitHubPullRequest extends GitHubIssues {
 
-    private PullRequestHead base;
+    private PullRequestBase base;
 
     public GitHubPullRequest() {
     }
 
     public GitHubPullRequest(String number, String status, String title, String body,
-                             List<IssueLabels> labels, PullRequestHead base) {
+                             List<IssueLabels> labels, PullRequestBase base) {
         super(number, status, title, body, labels);
         this.base = base;
 
     }
 
-    public PullRequestHead getBase() {
+    public PullRequestBase getBase() {
         return base;
     }
 
-    public void setBase(PullRequestHead base) {
+    public void setBase(PullRequestBase base) {
         this.base = base;
     }
 }
