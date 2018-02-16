@@ -2,15 +2,15 @@ package com.github.ghcli.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PullRequestHead {
+public class PullRequestBase {
 
     @SerializedName("repo")
     private GitHubRepository repository;
 
-    public PullRequestHead() {
+    public PullRequestBase() {
     }
 
-    public PullRequestHead(GitHubRepository repository) {
+    public PullRequestBase(GitHubRepository repository) {
         this.repository = repository;
     }
 
