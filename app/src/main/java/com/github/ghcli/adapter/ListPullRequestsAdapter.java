@@ -30,7 +30,7 @@ public class ListPullRequestsAdapter extends RecyclerView.Adapter<PullRequestsVi
     @Override
     public void onBindViewHolder(PullRequestsViewHolder holder, int position) {
         GitHubPullRequest pullRequest = pullRequests.get(position);
-        holder.setOwnerRepo(pullRequest.getHead().getRepository().getFullName());
+        holder.setOwnerRepo(pullRequest.getBase().getRepository().getFullName());
         holder.setPullRequestNumber(pullRequest.getNumber());
         holder.setPullRequestStatus(pullRequest.getStatus());
         holder.setPullRequestTitle(pullRequest.getTitle());
