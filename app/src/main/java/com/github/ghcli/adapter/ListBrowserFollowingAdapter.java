@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -20,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,29 +34,28 @@ public class ListBrowserFollowingAdapter extends RecyclerView.Adapter<ListBrowse
     private IGitHubUser iGitHubUser;
 
 
-    public ListBrowserFollowingAdapter(Context c, List<GitEvent> l, IGitHubUser iGitHubUser){
-        mList = l;
-        mLayoutInflater = (LayoutInflater) c.getSystemService(c.LAYOUT_INFLATER_SERVICE);
-        context = c;
+    public ListBrowserFollowingAdapter(Context context, List<GitEvent> list, IGitHubUser iGitHubUser){
+        mList = list;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
         this.iGitHubUser = iGitHubUser;
     }
 
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = mLayoutInflater.inflate(R.layout.item_browser_following_card, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.item_browser_following_card, parent, false);
 
-        MyViewHolder myViewHolder = new MyViewHolder(v);
+        MyViewHolder myViewHolder = new MyViewHolder(view);
 
 
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
         final GitEvent item = mList.get(position);
-
 
         holder.rvTxtNomeUserBrowser.setText(item.getActor().getName());
 
@@ -78,7 +79,6 @@ public class ListBrowserFollowingAdapter extends RecyclerView.Adapter<ListBrowse
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
 
         public TextView rvTxtNomeUserBrowser;
         public TextView rvTxtAction;

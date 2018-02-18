@@ -2,14 +2,16 @@ package com.github.ghcli.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class GitEvent {
 
     private String type;
     private GitHubUser actor;
-    private GitRepository repo;
+    private GitHubRepository repo;
 
     @SerializedName("created_at")
-    private String date;
+    private Date date;
 
     public String getType() {
         return type;
@@ -27,19 +29,19 @@ public class GitEvent {
         this.actor = actor;
     }
 
-    public GitRepository getRepo() {
+    public GitHubRepository getRepo() {
         return repo;
     }
 
-    public void setRepo(GitRepository repo) {
+    public void setRepo(GitHubRepository repo) {
         this.repo = repo;
     }
 
     public String getDate() {
-        return date;
+        return date.toString();
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

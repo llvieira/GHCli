@@ -77,33 +77,39 @@ public class BrowserFollowingFragment extends Fragment {
     }
 
     private void getEventsFollowing(){
-        List<GitEvent> gitEvents = new ArrayList<>();
-        List<GitHubUser> gitHubUsers = new ArrayList<>();
 
         Call<List<GitHubUser>> gitHubUserCall = iGitHubUser.getFollowing(Authentication.getToken(context));
 
-        try {
-            gitHubUsers = gitHubUserCall.execute().body();
+        gitHubUserCall.enqueue(new Callback<List<GitHubUser>>() {
+            List<GitHubUser> gitHubUsers = new ArrayList<>();
+            List<GitEvent> gitEvents = new ArrayList<>();
+            @Override
+            public void onResponse(Call<List<GitHubUser>> call, Response<List<GitHubUser>> response) {
+                gitHubUsers = response.body();
 
-            for(GitHubUser gitHubUser : gitHubUsers){
-                GitEvent gitEvent =getOneEvent(gitHubUser.getLogin());
-                if(gitEvent != null){
-                    gitEvent.getActor().setName(gitHubUser.getLogin());
-                    gitEvents.add(gitEvent);
+                for(GitHubUser gitHubUser : gitHubUsers){
+                    GitEvent gitEvent =getOneEvent(gitHubUser.getLogin());
+                    if(gitEvent != null){
+                        gitEvent.getActor().setName(gitHubUser.getLogin());
+                        gitEvents.add(gitEvent);
+                    }
                 }
+
+                recyclerView.setAdapter(new ListBrowserFollowingAdapter(context, gitEvents,iGitHubUser));
+                RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                        context,
+                        LinearLayoutManager.VERTICAL,
+                        false);
+                recyclerView.setLayoutManager(layout);
+
             }
 
-            recyclerView.setAdapter(new ListBrowserFollowingAdapter(context, gitEvents,iGitHubUser));
-            RecyclerView.LayoutManager layout = new LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false);
-            recyclerView.setLayoutManager(layout);
+            @Override
+            public void onFailure(Call<List<GitHubUser>> call, Throwable t) {
 
+            }
+        });
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
