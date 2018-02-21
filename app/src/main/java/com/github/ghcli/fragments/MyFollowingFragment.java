@@ -24,10 +24,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyFollowingFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Boolean flag = false;
 
     @BindView(R.id.rvListMyFollowings)
     RecyclerView recyclerView;
@@ -57,29 +60,53 @@ public class MyFollowingFragment extends Fragment {
 
     private void getFollowings() {
         Call<List<GitHubUser>> callFollowers = iGitHubUser.getFollowing(Authentication.getToken(context));
-        List<GitHubUser> gitHubUsers = new ArrayList<>();
-        List<GitHubUser> myFollowers = new ArrayList<>();
-        try {
-            gitHubUsers = callFollowers.execute().body();
-
-            for(GitHubUser gitHubUser : gitHubUsers){
-
-                Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
-                myFollowers.add(callMyFollowing.execute().body());
-
-            }
-            recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers,iGitHubUser));
-            RecyclerView.LayoutManager layout = new LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.VERTICAL,
-                    false);
-            recyclerView.setLayoutManager(layout);
+        final List<GitHubUser> gitHubUsers = new ArrayList<>();
+        final List<GitHubUser> myFollowers = new ArrayList<>();
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            callFollowers.enqueue(new Callback<List<GitHubUser>>() {
+                @Override
+                public void onResponse(Call<List<GitHubUser>> call, Response<List<GitHubUser>> response) {
+                    if (response.isSuccessful()) {
+                        gitHubUsers.addAll(response.body());
 
+                        for (GitHubUser gitHubUser : gitHubUsers) {
+
+                            final Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
+                            callMyFollowing.enqueue(new Callback<GitHubUser>() {
+                                @Override
+                                public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
+                                    if (response.isSuccessful()) {
+                                        myFollowers.add(response.body());
+
+                                        recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers, iGitHubUser));
+                                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                                                context,
+                                                LinearLayoutManager.VERTICAL,
+                                                false);
+                                        recyclerView.setLayoutManager(layout);
+                                    } else {
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<GitHubUser> call, Throwable t) {
+
+                                }
+                            });
+
+                        }
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<GitHubUser>> call, Throwable t) {
+
+                }
+            });
 
     }
 
