@@ -1,0 +1,3 @@
+[MASTER] 22:24:28.318 [main] ERROR TestGeneration - Not possible to access to clients. Clients' state: Terminated with exit status 1. Master registry port: 13502
+[MASTER] 22:24:28.369 [main] ERROR SearchStatistics - No statistics has been saved because EvoSuite failed to generate any test case
+[MASTER] 22:24:28.473 [main] ERROR TestGeneration - failed to write statistics data

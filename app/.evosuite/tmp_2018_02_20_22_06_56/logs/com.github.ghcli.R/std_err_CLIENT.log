@@ -1,0 +1,5 @@
+[MASTER] 22:22:06.795 [main] ERROR ClientProcess - Error when generating tests for: com.github.ghcli.R with seed 1519176126762. Configuration id : default
+java.lang.NoSuchFieldError: mockGUI
+	at org.evosuite.ClientProcess.setupRuntimeProperties(ClientProcess.java:136) ~[evosuite-1.0.5.jar:1.0.5]
+	at org.evosuite.ClientProcess.run(ClientProcess.java:67) ~[evosuite-1.0.5.jar:1.0.5]
+	at org.evosuite.ClientProcess.main(ClientProcess.java:203) ~[evosuite-1.0.5.jar:1.0.5]
