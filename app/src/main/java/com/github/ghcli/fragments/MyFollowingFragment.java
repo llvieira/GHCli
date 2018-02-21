@@ -67,33 +67,39 @@ public class MyFollowingFragment extends Fragment {
             callFollowers.enqueue(new Callback<List<GitHubUser>>() {
                 @Override
                 public void onResponse(Call<List<GitHubUser>> call, Response<List<GitHubUser>> response) {
-                    gitHubUsers.addAll(response.body());
+                    if (response.isSuccessful()) {
+                        gitHubUsers.addAll(response.body());
 
-                    for(GitHubUser gitHubUser : gitHubUsers){
+                        for (GitHubUser gitHubUser : gitHubUsers) {
 
-                        final Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
-                        callMyFollowing.enqueue(new Callback<GitHubUser>() {
-                            @Override
-                            public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
-                                myFollowers.add(response.body());
+                            final Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
+                            callMyFollowing.enqueue(new Callback<GitHubUser>() {
+                                @Override
+                                public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
+                                    if (response.isSuccessful()) {
+                                        myFollowers.add(response.body());
 
-                                recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers,iGitHubUser));
-                                RecyclerView.LayoutManager layout = new LinearLayoutManager(
-                                        context,
-                                        LinearLayoutManager.VERTICAL,
-                                        false);
-                                recyclerView.setLayoutManager(layout);
+                                        recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers, iGitHubUser));
+                                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                                                context,
+                                                LinearLayoutManager.VERTICAL,
+                                                false);
+                                        recyclerView.setLayoutManager(layout);
+                                    } else {
 
-                            }
+                                    }
+                                }
 
-                            @Override
-                            public void onFailure(Call<GitHubUser> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<GitHubUser> call, Throwable t) {
 
-                            }
-                        });
+                                }
+                            });
+
+                        }
+                    } else {
 
                     }
-
                 }
 
                 @Override
