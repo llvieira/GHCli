@@ -1,4 +1,4 @@
-# ES project
+# ES project (UFCG)
 
 ## Contributing
 
