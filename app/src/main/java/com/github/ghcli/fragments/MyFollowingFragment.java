@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListFollowersAdapter;
 import com.github.ghcli.adapter.ListMyFollowingAdapter;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
@@ -32,7 +35,9 @@ public class MyFollowingFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Boolean flag = false;
 
-    @BindView(R.id.rvListMyFollowings)
+    @BindView(R.id.followersProgressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.followers_recyclerView)
     RecyclerView recyclerView;
 
     private String mParam1;
@@ -48,8 +53,9 @@ public class MyFollowingFragment extends Fragment {
 
     }
 
-    public static MyFollowingFragment newInstance(String param1, String param2) {
-        MyFollowingFragment fragment = new MyFollowingFragment();
+    public static FollowersFragment newInstance(String param1, String param2) {
+        //MyFollowingFragment fragment = new MyFollowingFragment();
+        FollowersFragment fragment = new FollowersFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,6 +69,8 @@ public class MyFollowingFragment extends Fragment {
         final List<GitHubUser> gitHubUsers = new ArrayList<>();
         final List<GitHubUser> myFollowers = new ArrayList<>();
 
+        progressBar.setVisibility(View.VISIBLE);
+        Log.d("Tetet", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             callFollowers.enqueue(new Callback<List<GitHubUser>>() {
                 @Override
@@ -77,14 +85,18 @@ public class MyFollowingFragment extends Fragment {
                                 @Override
                                 public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
                                     if (response.isSuccessful()) {
+                                        progressBar.setVisibility(View.INVISIBLE);
                                         myFollowers.add(response.body());
+                                        //System.out.println(myFollowers);
+                                        Log.d("Tetet", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-                                        recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers, iGitHubUser));
+                                        recyclerView.setAdapter(new ListFollowersAdapter(myFollowers, context , iGitHubUser));
                                         RecyclerView.LayoutManager layout = new LinearLayoutManager(
                                                 context,
                                                 LinearLayoutManager.VERTICAL,
                                                 false);
                                         recyclerView.setLayoutManager(layout);
+                                        throw new RuntimeException("FOda-se");
                                     } else {
 
                                     }
