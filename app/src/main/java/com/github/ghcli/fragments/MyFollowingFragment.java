@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.ghcli.R;
+import com.github.ghcli.adapter.ListFollowersAdapter;
 import com.github.ghcli.adapter.ListMyFollowingAdapter;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.service.ServiceGenerator;
@@ -32,6 +35,8 @@ public class MyFollowingFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private Boolean flag = false;
 
+    @BindView(R.id.followersProgressBar)
+    ProgressBar progressBar;
     @BindView(R.id.rvListMyFollowings)
     RecyclerView recyclerView;
 
@@ -61,8 +66,8 @@ public class MyFollowingFragment extends Fragment {
     private void getFollowings() {
         Call<List<GitHubUser>> callFollowers = iGitHubUser.getFollowing(Authentication.getToken(context));
         final List<GitHubUser> gitHubUsers = new ArrayList<>();
-        final List<GitHubUser> myFollowers = new ArrayList<>();
 
+        progressBar.setVisibility(View.VISIBLE);
 
             callFollowers.enqueue(new Callback<List<GitHubUser>>() {
                 @Override
@@ -70,33 +75,14 @@ public class MyFollowingFragment extends Fragment {
                     if (response.isSuccessful()) {
                         gitHubUsers.addAll(response.body());
 
-                        for (GitHubUser gitHubUser : gitHubUsers) {
+                        progressBar.setVisibility(View.INVISIBLE);
 
-                            final Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
-                            callMyFollowing.enqueue(new Callback<GitHubUser>() {
-                                @Override
-                                public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
-                                    if (response.isSuccessful()) {
-                                        myFollowers.add(response.body());
-
-                                        recyclerView.setAdapter(new ListMyFollowingAdapter(context, myFollowers, iGitHubUser));
-                                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
-                                                context,
-                                                LinearLayoutManager.VERTICAL,
-                                                false);
-                                        recyclerView.setLayoutManager(layout);
-                                    } else {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<GitHubUser> call, Throwable t) {
-
-                                }
-                            });
-
-                        }
+                        recyclerView.setAdapter(new ListFollowersAdapter(gitHubUsers, context , iGitHubUser));
+                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                                context,
+                                LinearLayoutManager.VERTICAL,
+                                false);
+                        recyclerView.setLayoutManager(layout);
                     } else {
 
                     }
