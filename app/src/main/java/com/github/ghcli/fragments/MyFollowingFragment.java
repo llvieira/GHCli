@@ -66,7 +66,6 @@ public class MyFollowingFragment extends Fragment {
     private void getFollowings() {
         Call<List<GitHubUser>> callFollowers = iGitHubUser.getFollowing(Authentication.getToken(context));
         final List<GitHubUser> gitHubUsers = new ArrayList<>();
-        final List<GitHubUser> myFollowers = new ArrayList<>();
 
         progressBar.setVisibility(View.VISIBLE);
 
