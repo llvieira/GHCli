@@ -37,7 +37,7 @@ public class MyFollowingFragment extends Fragment {
 
     @BindView(R.id.followersProgressBar)
     ProgressBar progressBar;
-    @BindView(R.id.followers_recyclerView)
+    @BindView(R.id.rvListMyFollowings)
     RecyclerView recyclerView;
 
     private String mParam1;
@@ -53,9 +53,8 @@ public class MyFollowingFragment extends Fragment {
 
     }
 
-    public static FollowersFragment newInstance(String param1, String param2) {
-        //MyFollowingFragment fragment = new MyFollowingFragment();
-        FollowersFragment fragment = new FollowersFragment();
+    public static MyFollowingFragment newInstance(String param1, String param2) {
+        MyFollowingFragment fragment = new MyFollowingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,7 +69,6 @@ public class MyFollowingFragment extends Fragment {
         final List<GitHubUser> myFollowers = new ArrayList<>();
 
         progressBar.setVisibility(View.VISIBLE);
-        Log.d("Tetet", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
             callFollowers.enqueue(new Callback<List<GitHubUser>>() {
                 @Override
@@ -78,37 +76,14 @@ public class MyFollowingFragment extends Fragment {
                     if (response.isSuccessful()) {
                         gitHubUsers.addAll(response.body());
 
-                        for (GitHubUser gitHubUser : gitHubUsers) {
+                        progressBar.setVisibility(View.INVISIBLE);
 
-                            final Call<GitHubUser> callMyFollowing = iGitHubUser.getOneUser(Authentication.getToken(context), gitHubUser.getLogin());
-                            callMyFollowing.enqueue(new Callback<GitHubUser>() {
-                                @Override
-                                public void onResponse(Call<GitHubUser> call, Response<GitHubUser> response) {
-                                    if (response.isSuccessful()) {
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                        myFollowers.add(response.body());
-                                        //System.out.println(myFollowers);
-                                        Log.d("Tetet", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-                                        recyclerView.setAdapter(new ListFollowersAdapter(myFollowers, context , iGitHubUser));
-                                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
-                                                context,
-                                                LinearLayoutManager.VERTICAL,
-                                                false);
-                                        recyclerView.setLayoutManager(layout);
-                                        throw new RuntimeException("FOda-se");
-                                    } else {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<GitHubUser> call, Throwable t) {
-
-                                }
-                            });
-
-                        }
+                        recyclerView.setAdapter(new ListFollowersAdapter(gitHubUsers, context , iGitHubUser));
+                        RecyclerView.LayoutManager layout = new LinearLayoutManager(
+                                context,
+                                LinearLayoutManager.VERTICAL,
+                                false);
+                        recyclerView.setLayoutManager(layout);
                     } else {
 
                     }

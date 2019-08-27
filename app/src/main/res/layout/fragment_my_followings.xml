@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/frameLayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.github.ghcli.fragments.FollowersFragment">
+tools:context="com.github.ghcli.fragments.MyFollowingFragment">
 
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
