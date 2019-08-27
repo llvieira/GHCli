@@ -13,6 +13,16 @@ public class GitHubUser implements Parcelable {
     private String bio;
     private String email;
     private String location;
+    private Integer followers;
+
+    @SerializedName("following")
+    private Integer followings;
+
+    @SerializedName("public_repos")
+    private Integer publicRepos;
+
+    @SerializedName("total_private_repos")
+    private Integer privateRepos;
 
     @SerializedName("avatar_url")
     private String avatarUrl;
@@ -20,13 +30,17 @@ public class GitHubUser implements Parcelable {
     public GitHubUser() {
     }
 
-    public GitHubUser(String login, String name, String type, String bio, String email, String location, String avatarUrl) {
+    public GitHubUser(String login, String name, String type, String bio, String email, String location, Integer followers, Integer followings, Integer publicRepos, Integer privateRepos, String avatarUrl) {
         this.login = login;
         this.name = name;
         this.type = type;
         this.bio = bio;
         this.email = email;
         this.location = location;
+        this.followers = followers;
+        this.followings = followings;
+        this.publicRepos = publicRepos;
+        this.privateRepos = privateRepos;
         this.avatarUrl = avatarUrl;
     }
 
@@ -37,6 +51,10 @@ public class GitHubUser implements Parcelable {
         bio = in.readString();
         email = in.readString();
         location = in.readString();
+        followers = in.readInt();
+        followings = in.readInt();
+        publicRepos = in.readInt();
+        privateRepos = in.readInt();
         avatarUrl = in.readString();
     }
 
@@ -88,6 +106,22 @@ public class GitHubUser implements Parcelable {
 
     public void setLocation(String location) { this.location = location; }
 
+    public Integer getFollowers() { return followers; }
+
+    public void setFollowers(Integer followers) { this.followers = followers; }
+
+    public Integer getFollowings() { return followings; }
+
+    public void setFollowings(Integer followings) { this.followings = followings; }
+
+    public Integer getPublicRepos() { return publicRepos; }
+
+    public void setPublicRepos(Integer publicRepos) { this.publicRepos = publicRepos; }
+
+    public Integer getPrivateRepos() { return privateRepos; }
+
+    public void setPrivateRepos(Integer privateRepos) { this.privateRepos = privateRepos; }
+
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -122,6 +156,10 @@ public class GitHubUser implements Parcelable {
         parcel.writeString(bio);
         parcel.writeString(email);
         parcel.writeString(location);
+        parcel.writeInt(followers);
+        parcel.writeInt(followings);
+        parcel.writeInt(publicRepos);
+        parcel.writeInt(privateRepos);
         parcel.writeString(avatarUrl);
     }
 

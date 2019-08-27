@@ -38,6 +38,11 @@
     <string name="location_default_user">No Location</string>
     <string name="bio_default_user">No Description</string>
     <string name="profile_organization">Organizations</string>
+    <string name="profile_overview">Overview</string>
+    <string name="default_overview_followers">Followers: 0</string>
+    <string name="default_overview_followings">Following: 0</string>
+    <string name="default_overview_public_repos">Public Repos: 0</string>
+    <string name="default_overview_private_repos">Private Repos: 0</string>
 
     <string name="menu_profile">Profile</string>
     <string name="menu_repos">Repositories</string>

@@ -30,6 +30,11 @@ import static android.graphics.Bitmap.createBitmap;
 public class ProfileFragment extends Fragment {
     private static final String ARG_USER = "user";
     private static final String ARG_USER_ORGANIZATIONS = "organizations";
+    private static final String OVERVIEW_FOLLOWERS = "Followers: ";
+    private static final String OVERVIEW_FOLLOWINGS = "Followings: ";
+    private static final String OVERVIEW_PUBLIC_REPOS = "Public Repos: ";
+    private static final String OVERVIEW_PRIVATE_REPOS = "Private Repos: ";
+
 
     private OnFragmentInteractionListener mListener;
     private GitHubUser user;
@@ -41,6 +46,10 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profileBio) TextView profileBio;
     @BindView(R.id.profileEmail) TextView profileEmail;
     @BindView(R.id.profileLocation) TextView profileLocation;
+    @BindView(R.id.overviewFollowers) TextView overviewFollowers;
+    @BindView(R.id.overviewFollowings) TextView overviewFollowings;
+    @BindView(R.id.overviewPublicRepos) TextView overviewPublicRepos;
+    @BindView(R.id.overviewPrivateRepos) TextView overviewPrivateRepos;
     @BindView(R.id.profileOrganizations) TextView profileOrganizations;
     @BindView(R.id.lineOrganizations) View lineOrganizations;
     @BindView(R.id.organizationsRecyclerView) RecyclerView organizationsRecyclerView;
@@ -106,6 +115,22 @@ public class ProfileFragment extends Fragment {
 
         if(user.getLocation() != null) {
             profileLocation.setText(user.getLocation());
+        }
+
+        if(user.getFollowers() != null) {
+            overviewFollowers.setText(OVERVIEW_FOLLOWERS + user.getFollowers());
+        }
+
+        if(user.getFollowings() != null) {
+            overviewFollowings.setText(OVERVIEW_FOLLOWINGS + user.getFollowings());
+        }
+
+        if(user.getPublicRepos() != null) {
+            overviewPublicRepos.setText(OVERVIEW_PUBLIC_REPOS + user.getPublicRepos());
+        }
+
+        if(user.getPrivateRepos() != null) {
+            overviewPrivateRepos.setText(OVERVIEW_PRIVATE_REPOS + user.getPrivateRepos());
         }
 
         if(userOrganizations != null && !userOrganizations.isEmpty()) {
