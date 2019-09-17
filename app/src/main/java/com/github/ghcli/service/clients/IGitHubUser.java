@@ -1,6 +1,7 @@
 package com.github.ghcli.service.clients;
 
 import com.github.ghcli.models.GitHubIssues;
+import com.github.ghcli.models.GitHubNotification;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubPullRequest;
 import com.github.ghcli.models.GitHubRepository;
@@ -24,6 +25,9 @@ public interface IGitHubUser {
 
     @GET("user")
     Call<GitHubUser> getUser(@Header("Authorization") String credentials);
+
+    @GET("notifications")
+    Call<List<GitHubNotification>> getNotifications(@Header("Authorization") String credentials);
 
     @GET("user/orgs")
     Call<ArrayList<GitHubOrganization>> getUserOrgs(@Header("Authorization") String credentials);

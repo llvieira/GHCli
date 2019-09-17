@@ -1,6 +1,7 @@
 package com.github.ghcli.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import com.github.ghcli.R;
 import com.github.ghcli.fragments.FollowersFragment;
 import com.github.ghcli.fragments.IssuesFragment;
 import com.github.ghcli.fragments.MyFollowingFragment;
+import com.github.ghcli.fragments.NotificationsFragment;
 import com.github.ghcli.fragments.ProfileFragment;
 import com.github.ghcli.fragments.PullRequesFragment;
 import com.github.ghcli.fragments.ReposFragment;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 
 public class HomePage extends AppCompatActivity implements
         ProfileFragment.OnFragmentInteractionListener,
+        NotificationsFragment.OnFragmentInteractionListener,
         FollowersFragment.OnFragmentInteractionListener,
         ReposFragment.OnFragmentInteractionListener,
         StarredReposFragment.OnFragmentInteractionListener,
@@ -49,7 +52,7 @@ public class HomePage extends AppCompatActivity implements
     private static final String KEY_USER_ORGANIZATIONS = "organizations";
 
     private DrawerLayout drawerLayout;
-    private String[] actions = {"Profile", "Repositories", "Stars", "Followers", "Issues", "Pull Requests", "Following",  "Sign out"};
+    private String[] actions = {"Profile", "Notifications", "Repositories", "Stars", "Followers", "Issues", "Pull Requests", "Following",  "Sign out"};
     private ListView leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
@@ -143,24 +146,27 @@ public class HomePage extends AppCompatActivity implements
                 frag = ProfileFragment.newInstance(user, userOrganizations);
                 break;
             case 1:
-                frag = ReposFragment.newInstance("teste1","teste2");
+                frag = NotificationsFragment.newInstance("teste1","teste2");
                 break;
             case 2:
-                frag = StarredReposFragment.newInstance("teste1", "teste2");
+                frag = ReposFragment.newInstance("teste1","teste2");
                 break;
             case 3:
-                frag = FollowersFragment.newInstance("teste1", "teste2");
+                frag = StarredReposFragment.newInstance("teste1", "teste2");
                 break;
             case 4:
-                frag = IssuesFragment.newInstance("teste1","teste2");
+                frag = FollowersFragment.newInstance("teste1", "teste2");
                 break;
             case 5:
-                frag = PullRequesFragment.newInstance("teste1", "teste2");
+                frag = IssuesFragment.newInstance("teste1","teste2");
                 break;
             case 6:
-                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                frag = PullRequesFragment.newInstance("teste1", "teste2");
                 break;
             case 7:
+                frag = MyFollowingFragment.newInstance("teste1", "teste2");
+                break;
+            case 8:
                 logout();
                 break;
         }
