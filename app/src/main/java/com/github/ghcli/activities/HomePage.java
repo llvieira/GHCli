@@ -20,6 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.ghcli.models.SocketIOUser;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+import com.github.nkzawa.emitter.Emitter;
+
 import com.github.ghcli.R;
 import com.github.ghcli.fragments.FollowersFragment;
 import com.github.ghcli.fragments.IssuesFragment;
@@ -31,7 +36,9 @@ import com.github.ghcli.fragments.StarredReposFragment;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubUser;
 import com.github.ghcli.util.Authentication;
+import com.google.gson.Gson;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 public class HomePage extends AppCompatActivity implements
@@ -56,9 +63,23 @@ public class HomePage extends AppCompatActivity implements
     private GitHubUser user;
     private ArrayList<GitHubOrganization> userOrganizations;
 
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket("http://192.168.0.5:3000");
+            Log.d("socket", mSocket.toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // connecting to socket.io
+        mSocket.connect();
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_home_page);
@@ -72,6 +93,27 @@ public class HomePage extends AppCompatActivity implements
 
         Log.d("TOKEN", Authentication.getToken(getApplicationContext()));
 
+        // emitting message to socket.io
+        SocketIOUser socketIOUser = new SocketIOUser(
+                Authentication.getToken(getApplicationContext()).split(" ")[1],
+                user.getEmail());
+        Gson gson = new Gson();
+        String socketIOUserJson = gson.toJson(socketIOUser);
+        mSocket.emit("message", socketIOUserJson);
+
+        mSocket.on("notification", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Object data = (ArrayList) args[0];
+                        System.out.println(args[0]);
+                        // TODO: PUSH NOTIFICATION
+                    }
+                });
+            }
+        });
 
         leftDrawer.setAdapter(new ArrayAdapter<String>(
                 this,
