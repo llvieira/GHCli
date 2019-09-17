@@ -9,7 +9,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_close">Close</string>
-    <string name="welcome_to_ghcli">Welcome to GHCli</string>
+    <string name="welcome_to_ghcli">GHCli</string>
 
 
     <!--Messages Login-->
