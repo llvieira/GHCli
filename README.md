@@ -1,5 +1,8 @@
 # ES project
 
+![image](https://user-images.githubusercontent.com/26657147/67778820-8d7bd800-fa42-11e9-8de8-518542eee1ec.png)
+
+
 ## Contributing
 
 Check out [CONTRIBUTING.md](https://github.com/llvieira/GHCli/blob/master/CONTRIBUTING.md).
