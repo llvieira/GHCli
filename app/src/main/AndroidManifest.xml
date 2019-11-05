@@ -26,6 +26,7 @@
         <activity
             android:name=".activities.HomePage"
             android:label="@string/title_activity_home_page"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme" />
 
         <meta-data
