@@ -9,7 +9,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign In</string>
     <string name="action_close">Close</string>
-    <string name="welcome_to_ghcli">Welcome to GHCli</string>
+    <string name="welcome_to_ghcli">GHCli</string>
 
 
     <!--Messages Login-->
@@ -53,4 +53,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="channel_name">Notification Channel</string>
+    <string name="channel_description">Notification Channel</string>
 </resources>

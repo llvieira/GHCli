@@ -63,10 +63,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:layout_marginTop="13dp"
-            android:src="@mipmap/octocat" />
+            android:src="@mipmap/git_logo_round" />
 
         <TextView
             android:layout_width="wrap_content"

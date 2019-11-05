@@ -1,15 +1,18 @@
 package com.github.ghcli.service.clients;
 
 import com.github.ghcli.models.GitHubIssues;
+import com.github.ghcli.models.GitHubNotification;
 import com.github.ghcli.models.GitHubOrganization;
 import com.github.ghcli.models.GitHubPullRequest;
 import com.github.ghcli.models.GitHubRepository;
 import com.github.ghcli.models.GitHubUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -24,6 +27,9 @@ public interface IGitHubUser {
 
     @GET("user")
     Call<GitHubUser> getUser(@Header("Authorization") String credentials);
+
+    @GET("notifications")
+    Call<List<GitHubNotification>> getNotifications(@Header("Authorization") String credentials);
 
     @GET("user/orgs")
     Call<ArrayList<GitHubOrganization>> getUserOrgs(@Header("Authorization") String credentials);
@@ -59,6 +65,9 @@ public interface IGitHubUser {
 
     @PUT("user/following/{user}")
     Call<Void> follow(@Header("Authorization") String credentials, @Path("user") String user);
+
+    @PUT("notifications")
+    Call<Void> markNotificationAsRead(@Header("Authorization") String credentials, @Body HashMap<String, String> lastRead);
 
     @DELETE("user/following/{user}")
     Call<Void> unfollow(@Header("Authorization") String credentials, @Path("user") String user);
