@@ -1,4 +1,6 @@
-# ES project
+# GitHub Client
+
+:iphone: An Android tool for controlling your GitHub profile and your connections.
 
 ![image](https://user-images.githubusercontent.com/26657147/67778820-8d7bd800-fa42-11e9-8de8-518542eee1ec.png)
 
