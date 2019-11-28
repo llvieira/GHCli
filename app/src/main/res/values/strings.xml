@@ -47,6 +47,7 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_repos">Repositories</string>
     <string name="menu_followers">Followers</string>
+    <string name="notification_type_default">No Type</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

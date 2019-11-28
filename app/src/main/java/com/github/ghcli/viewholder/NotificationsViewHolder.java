@@ -14,6 +14,7 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.notificationReason) TextView notificationReason;
     @BindView(R.id.notificationDescription) TextView notificationDescription;
+    @BindView(R.id.notificationType) TextView notificationType;
 
 
     public NotificationsViewHolder(View itemView) {
@@ -25,13 +26,13 @@ public class NotificationsViewHolder extends RecyclerView.ViewHolder {
         return notificationReason;
     }
 
-    public void setNotificationReason(String reason) {
-        this.notificationReason.setText(reason);
-    }
+    public void setNotificationReason(String reason) { this.notificationReason.setText(" " + reason); }
 
-    public TextView getNotificationDescription() {
-        return notificationDescription;
-    }
+    public TextView getNotificationDescription() { return notificationDescription; }
 
     public void setNotificationDescription(String description) { this.notificationDescription.setText(description); }
+
+    public TextView getNotificationType() { return notificationType; }
+
+    public void setNotificationType(String repositoryFullName) { this.notificationType.setText(repositoryFullName); }
 }

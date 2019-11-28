@@ -40,7 +40,7 @@
                     android:text="@string/repos_name_default"
                     android:textAlignment="viewStart"
                     android:textColor="@android:color/black"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <Button
