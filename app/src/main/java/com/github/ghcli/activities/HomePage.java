@@ -92,7 +92,7 @@ public class HomePage extends AppCompatActivity implements
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://192.168.15.9:3000");
+            mSocket = IO.socket("http://191.252.196.48:8080");
             Log.d("socket", mSocket.toString());
         } catch (URISyntaxException e) {
             e.printStackTrace();
