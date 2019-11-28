@@ -38,12 +38,20 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<Notifications
     public void onBindViewHolder(NotificationsViewHolder holder, int position) {
         GitHubNotification notification = notifications.get(position);
 
-        if (notification.getReason() != null) {
-            holder.setNotificationReason(notification.getReason());
+        if (notification.getRepository() != null) {
+            GitHubRepository repository = notification.getRepository();
+
+            if (repository.getFullName() != null) {
+                holder.setNotificationType(repository.getFullName());
+            }
         }
 
         if (notification.getSubject() != null) {
             GitHubNotificationSubject subject = notification.getSubject();
+
+            if (subject.getType() != null) {
+                holder.setNotificationReason(subject.getType());
+            }
 
             if (subject.getTitle() != null) {
                 holder.setNotificationDescription(subject.getTitle());

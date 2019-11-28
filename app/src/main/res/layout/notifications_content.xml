@@ -35,16 +35,29 @@
                     android:id="@+id/notificationReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@android:drawable/ic_notification_overlay"
+                    android:layout_weight="2"
+                    android:drawableStart="?android:attr/alertDialogIcon"
                     android:paddingLeft="8dp"
                     android:text="@string/repos_name_default"
                     android:textAlignment="viewStart"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/notificationType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="@string/notification_type_default"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="italic" />
 
             <TextView
                 android:id="@+id/notificationDescription"
@@ -55,7 +68,7 @@
                 android:text="@string/repos_description_default"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
